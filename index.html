@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Byt vs. akcie: Jano, Laco, Milan, Jožo, Fero — 20 rokov</title>
+<title>Byt vs. akcie: 6 ciest (5 + bonus Karpiš) — 20 rokov</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -152,6 +152,31 @@
   .cast .who:hover{transform:translateY(-2px); border-color:var(--border-strong);}
   .cast .who b{display:block; font-size:0.92rem; margin-bottom:3px; font-weight:600;}
   .cast .who span{color:var(--muted); line-height:1.4;}
+  .cast .who.bonus{border-style:dashed; opacity:.92;}
+  .cast .who .badge{
+    display:inline-block;
+    font-size:0.62rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--karpis);
+    background:rgba(199,146,234,.12);
+    border:1px solid rgba(199,146,234,.3);
+    border-radius:999px;
+    padding:2px 7px;
+    margin-bottom:4px;
+  }
+  .stat-card.bonus::after{
+    content:"Bonus";
+    position:absolute; top:12px; right:12px;
+    font-size:0.62rem; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase;
+    color:var(--karpis);
+    background:rgba(199,146,234,.12);
+    border:1px solid rgba(199,146,234,.25);
+    border-radius:999px;
+    padding:3px 8px;
+  }
 
   .section-label{
     font-size:0.7rem;
@@ -427,11 +452,11 @@
 
 <header class="hero">
   <div class="hero-tag">Interaktívny model · 20 rokov</div>
-  <h1>Byt vs. akcie:<br><em>päť ciest, jeden spor</em></h1>
-  <p class="hero-lead">Meň si predpoklady a pozri, kedy vyhráva nehnuteľnosť a kedy akcie — podľa rovnakých pravidiel pre všetkých.</p>
+  <h1>Byt vs. akcie:<br><em>6 ciest, jeden spor</em></h1>
+  <p class="hero-lead">Päť základných scenárov + bonusová šiesta cesta (Karpišova páka 1:1). Meň si predpoklady a pozri, kedy vyhráva nehnuteľnosť a kedy akcie.</p>
 
   <div class="intro">
-    <p><b>Prečo tento nástroj existuje:</b> v podcaste Dubec vs. Karpiš zaznelo veľa čísel (140 % vs. 470 % za 15 rokov, výnosové percento 4,5 %, páka 1:1 na S&P 500...), ale rozhovor sa preskakoval medzi témami a nikdy sa nedopracoval k jasnému, počítateľnému porovnaniu pre bežného človeka. Tento model to skúša doriešiť na piatich fiktívnych 20-ročných životných cestách — plus bonus šiesta, ktorá doslova testuje Karpišovo tvrdenie o páke 1:1.</p>
+    <p><b>Prečo tento nástroj existuje:</b> v podcaste Dubec vs. Karpiš zaznelo veľa čísel (140 % vs. 470 % za 15 rokov, výnosové percento 4,5 %, páka 1:1 na S&P 500...), ale rozhovor sa preskakoval medzi témami a nikdy sa nedopracoval k jasnému, počítateľnému porovnaniu pre bežného človeka. Tento model to skúša doriešiť na <b>6 fiktívnych 20-ročných cestách</b>: Jano, Laco, Milan, Jožo a Fero sú hlavné scenáre; <b>šiesta cesta (bonus)</b> doslova testuje Karpišovo tvrdenie o páke 1:1 na akciách namiesto bytu.</p>
     <p><b>Dôležité:</b> toto nie je predikcia budúcnosti, je to kalkulačka predpokladov. Všetky čísla nižšie sú upraviteľné — základné hodnoty vychádzajú z historických priemerov posledných ~15–20 rokov (zdroje v päte stránky), ale budúci vývoj môže byť úplne iný (aj Dubec aj Karpiš sa v podcaste zhodli, že posledných 20 rokov na Slovensku sa pravdepodobne nezopakuje).</p>
   </div>
 
@@ -498,8 +523,9 @@
   </div>
 
   <div class="ctrl-group">
-    <h4>Bonus: Karpišova páka 1:1</h4>
-    <div class="karpis-toggle"><input type="checkbox" id="showKarpis" checked><label for="showKarpis">Zobraziť scenár „páka 1:1 na akcie namiesto bytu"</label></div>
+    <h4>6. cesta — bonus: Karpišova páka 1:1</h4>
+    <div class="note">Toto je <b>bonusový</b> scenár naviac k piatim hlavným — rovnaká akontácia ako pri byte, ale 1:1 pákovaná do akcií. Môžeš ju skryť z grafov, ak chceš porovnávať len päť základných ciest.</div>
+    <div class="karpis-toggle"><input type="checkbox" id="showKarpis" checked><label for="showKarpis">Zobraziť bonusovú 6. cestu v grafoch a výsledkoch</label></div>
     <div class="field"><label>Úrok maržového/lombardného úveru <span class="val" id="v_marginRate"></span></label><input type="range" id="marginRate" min="1" max="10" step="0.1"></div>
   </div>
 
@@ -522,7 +548,7 @@
   <canvas id="chartSensitivity"></canvas>
 </div>
 
-<div class="section-label">Kto je kto</div>
+<div class="section-label">6 ciest — kto je kto</div>
 <div class="persons" id="personCards"></div>
 
 <div class="verdict">
@@ -807,14 +833,18 @@ function buildPresetButtons(){
 
 function buildCastRow(){
   const cast = [
-    {name:'Jano', c:'var(--jano)', desc:'Byt + dokupuje ďalšie byty na prenájom (páka 1:5)'},
-    {name:'Laco', c:'var(--laco)', desc:'Byt na hypotéku, zvyšok do akcií'},
-    {name:'Milan', c:'var(--milan)', desc:'Byt na hypotéku, zvyšok len sporí (hotovosť/dlhopisy)'},
-    {name:'Jožo', c:'var(--jozo)', desc:'Prenájom, celý prebytok do akcií'},
-    {name:'Fero', c:'var(--fero)', desc:'Prenájom + spotrebný úver do akcií'},
+    {name:'Jano', c:'var(--jano)', desc:'Byt + dokupuje ďalšie byty na prenájom (páka 1:5)', bonus:false},
+    {name:'Laco', c:'var(--laco)', desc:'Byt na hypotéku, zvyšok do akcií', bonus:false},
+    {name:'Milan', c:'var(--milan)', desc:'Byt na hypotéku, zvyšok len sporí (hotovosť/dlhopisy)', bonus:false},
+    {name:'Jožo', c:'var(--jozo)', desc:'Prenájom, celý prebytok do akcií', bonus:false},
+    {name:'Fero', c:'var(--fero)', desc:'Prenájom + spotrebný úver do akcií', bonus:false},
+    {name:'Karpišova páka', c:'var(--karpis)', desc:'Páka 1:1 na akcie namiesto bytu — bonusová 6. cesta', bonus:true},
   ];
   document.getElementById('castRow').innerHTML = cast.map(c=>`
-    <div class="who" style="--c:${c.c}"><b style="color:${c.c}">${c.name}</b><span>${c.desc}</span></div>
+    <div class="who${c.bonus?' bonus':''}" style="--c:${c.c}">
+      ${c.bonus?'<span class="badge">Bonus · 6. cesta</span>':''}
+      <b style="color:${c.c}">${c.name}</b><span>${c.desc}</span>
+    </div>
   `).join('');
 }
 
@@ -852,7 +882,7 @@ function render(){
     {key:'jozo', name:'Jožo', tag:'Prenajíma, celý prebytok DCA do akcií', color:'var(--jozo)', data:r.jozo},
     {key:'fero', name:'Fero', tag:'Prenajíma + spotrebný úver 7% do akcií', color:'var(--fero)', data:r.fero},
   ];
-  if(state.showKarpis) cards.push({key:'karpis', name:'Karpišova páka', tag:'Páka 1:1 na akcie namiesto bytu', color:'var(--karpis)', data:r.karpis});
+  if(state.showKarpis) cards.push({key:'karpis', name:'Karpišova páka', tag:'Bonus · 6. cesta — páka 1:1 na akcie', color:'var(--karpis)', data:r.karpis, bonus:true});
 
   const statWrap = document.getElementById('statCards');
   statWrap.innerHTML = '';
@@ -860,7 +890,7 @@ function render(){
     const liqAbs = Math.max(0,c.data.liquid), illAbs = Math.max(0,c.data.illiquid);
     const liquidPct = (liqAbs+illAbs)>0 ? liqAbs/(liqAbs+illAbs)*100 : 50;
     const div = document.createElement('div');
-    div.className='stat-card';
+    div.className='stat-card'+(c.bonus?' bonus':'');
     div.style.setProperty('--c', c.color);
     div.innerHTML = `
       <h3 style="color:${c.color}">${c.name}</h3>
@@ -931,7 +961,7 @@ function buildPersonCards(){
       <li>Opakovane recykluje tú istú lacnú bankovú páku — každý ďalší byt znásobuje výnos z rovnakého vlastného kapitálu.</li>
       <li>Nájomné čiastočne alebo úplne pokrýva splátky ďalších hypoték — portfólio sa čiastočne financuje samo.</li>
       <li>Kým hypotéky riadne spláca, banka sa nestará o pokles cien — žiadny margin call ako pri pákovaných akciách.</li>
-      <li>V tomto modeli má po 20 rokoch najvyšší čistý majetok zo všetkých piatich ciest — priamy dôsledok opakovanej páky.</li>
+      <li>V tomto modeli má po 20 rokoch najvyšší čistý majetok zo všetkých šiestich ciest — priamy dôsledok opakovanej páky.</li>
     </ul>
     <div class="blocklabel risk">Riziká</div>
     <ul class="bullets">
@@ -1018,7 +1048,7 @@ function buildPersonCards(){
   </div>
 
   <div class="person-card" style="--c:var(--karpis)">
-    <h3><span class="dot"></span>Bonus: Karpišova páka 1:1</h3>
+    <h3><span class="dot"></span>6. cesta (bonus) — Karpišova páka 1:1</h3>
     <div class="tagline">Rovnaká vlastná investícia ako Lacova akontácia, ale 1:1 pákovaná do akcií namiesto bytu</div>
     <div class="blocklabel benefit">Benefity</div>
     <ul class="bullets">
