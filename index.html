@@ -419,6 +419,101 @@
   }
   .verdict .split h4{margin:0 0 10px; font-size:0.88rem; font-weight:700;}
 
+  /* Ideálna cesta pre mladého človeka */
+  .youth-path{
+    background:linear-gradient(160deg, rgba(69,216,138,.06) 0%, var(--panel) 35%, rgba(107,159,255,.05) 100%);
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    padding:28px 26px;
+    margin:36px 0 32px;
+    box-shadow:0 8px 40px rgba(0,0,0,.22);
+  }
+  .youth-path h2{
+    font-family:var(--serif);
+    font-size:1.75rem;
+    font-weight:400;
+    margin:0 0 6px;
+  }
+  .youth-path .youth-lead{
+    color:var(--muted);
+    font-size:0.92rem;
+    line-height:1.6;
+    margin:0 0 22px;
+    max-width:720px;
+  }
+  .youth-path .blindspot{
+    background:rgba(255,180,84,.08);
+    border:1px solid rgba(255,180,84,.22);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:0.88rem;
+    line-height:1.55;
+    color:#c8cdd8;
+    margin-bottom:24px;
+  }
+  .youth-path .blindspot b{color:#ffb454;}
+  .phases{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:22px;}
+  .phase{
+    background:rgba(0,0,0,.22);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 16px 14px;
+  }
+  .phase-num{
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent2);
+    margin-bottom:6px;
+  }
+  .phase h4{margin:0 0 8px; font-size:0.92rem; font-weight:700; line-height:1.35;}
+  .phase p{margin:0; font-size:0.84rem; color:#b8beca; line-height:1.5;}
+  .youth-block{
+    background:rgba(0,0,0,.18);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    font-size:0.88rem;
+    line-height:1.55;
+    color:#c8cdd8;
+  }
+  .youth-block h4{margin:0 0 8px; font-size:0.88rem; font-weight:700; color:var(--text);}
+  .youth-block p{margin:0;}
+  .checklist{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    gap:8px;
+  }
+  .checklist li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:0.86rem;
+    color:#c4cad4;
+    line-height:1.45;
+  }
+  .checklist li::before{
+    content:"";
+    flex-shrink:0;
+    width:18px; height:18px;
+    margin-top:1px;
+    border:1.5px solid var(--accent2);
+    border-radius:4px;
+    opacity:.7;
+  }
+  .checklist .verdict-note{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+    font-size:0.84rem;
+    color:var(--muted);
+    font-style:italic;
+  }
+
   footer{
     margin-top:48px;
     font-size:0.76rem;
@@ -435,6 +530,7 @@
     .verdict .split{grid-template-columns:1fr;}
     .disclaimer{flex-direction:column; gap:8px;}
     h1{font-size:1.85rem;}
+    .phases{grid-template-columns:1fr;}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -552,6 +648,56 @@
 
 <div class="section-label">6 ciest — kto je kto</div>
 <div class="persons" id="personCards"></div>
+
+<div class="section-label">Nad rámec kalkulačky</div>
+
+<div class="youth-path">
+  <h2>Ideálna cesta pre mladého človeka</h2>
+  <p class="youth-lead">Meta-odporúčanie, ktoré model nepočíta — nie je to ďalšia postava v simulácii, ale postupnosť krokov, ktorá dáva zmysel predtým, než si niekto „all-in" vyberie jednu z ciest vyššie.</p>
+
+  <div class="blindspot">
+    <b>Čo kalkulačka nezachytáva:</b> všetkých šesť ciest predpokladá rovnaký pevný rast mzdy (5 %/rok) od 20 rokov. V realite je práve toto — nie voľba byt vs. akcie — často <b>najväčšia páka</b>, akú má človek v dvadsiatke k dispozícii. Rozdiel medzi tým, kto zostane 20 rokov na jednej pozícii s automatickými nárastmi, a tým, kto si doplní vzdelanie, 2–3× zmení prácu za lepšiu ponuku alebo sa presunie na lepší trh práce, býva rádovo väčší než rozdiel medzi 6 % a 9 % ročným výnosom aktíva. Túto premennú model vôbec nezachytáva — a treba to priznať.
+  </div>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-num">Fáza 1 · ~20–27 rokov</div>
+      <h4>Rast príjmu a flexibilita</h4>
+      <p>Priorita je vzdelanie a zručnosti, ochota meniť prácu aj mesto, budovanie 3–6-mesačnej rezervy a pravidelné investovanie aj malých súm (návyk &gt; suma). Vyhýbaj sa veľkým nelikvidným záväzkom, kým nie je jasné, kde a s kým chceš o 5 rokov žiť a pracovať.</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Fáza 2 · keď je lokalita stabilná</div>
+      <h4>Vážne riešiť kúpu bytu</h4>
+      <p>Až vtedy dáva zmysel kúpa podľa objektívnych kritérií — čistý nájomný výnos minimálne ~4,5 %, ako hovorí Dubec — nie preto, že „každý si kupuje byt". Do tej doby skôr cesta Joža: prenájom + DCA do akcií.</p>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Fáza 3 · voliteľná</div>
+      <h4>Škálovanie páky</h4>
+      <p>Viaceré nehnuteľnosti (Janova cesta) alebo páka na akciách (Karpišova cesta) — obe zvyšujú výnos, ale aj koncentráciu rizika a nároky na čas. Až keď vieš, že je to tvoja hra.</p>
+    </div>
+  </div>
+
+  <div class="youth-block">
+    <h4>Prečo „kúpiť čo najskôr" nemusí byť optimálne</h4>
+    <p>Aj keby čísla v kalkulačke vychádzali v prospech bytu: hypotéka ťa zamkne na 20–30 rokov k jednému miestu a banke práve v období najväčšej neistoty o kariére aj vzťahoch. Nízka akontácia znamená menej rezervy na neočakávané výdavky. A čas strávený správou bytov (Janova cesta) je alternatívny náklad voči budovaniu zručností, ktoré ti v 20-tke zarábajú viac než akýkoľvek rozdiel medzi aktívami.</p>
+  </div>
+
+  <div class="youth-block">
+    <h4>Prepojenie na podcast</h4>
+    <p>Karpiš hovoril, že nehnuteľnosti sú vhodné „pre toho, kto tomu rozumie a chce sa tým zaoberať" — v podstate argument <b>„over si, či je to tvoja hra, potom škáluj"</b>, nie automatický štart v dvadsiatke. Dubec zase zdôrazňuje výnosové percento a disciplínu pri výbere — obaja implicitne hovoria, že univerzálny recept „kúp hneď" neexistuje.</p>
+  </div>
+
+  <div class="youth-block">
+    <h4>Checklist pred prvým bytom</h4>
+    <ul class="checklist">
+      <li>Mám 3–6-mesačnú rezervu mimo investícií a akontácie?</li>
+      <li>Som si istý mestom/krajinou na ďalších 5–7 rokov?</li>
+      <li>Čistý nájomný výnos v lokalite je nad ~4–4,5 %?</li>
+      <li>Mám istý príjem (nie skúšobná doba / rozbeh podnikania)?</li>
+    </ul>
+    <p class="verdict-note">Pri „nie" na ktorúkoľvek otázku → radšej cesta Jožo alebo Laco (prenájom + investovanie), kým sa okolnosti nevyjasnia.</p>
+  </div>
+</div>
 
 <div class="verdict">
   <h2>Kto mal v podcaste pravdu?</h2>
