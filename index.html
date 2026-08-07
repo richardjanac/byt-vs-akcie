@@ -487,7 +487,7 @@
     <div class="field"><label>Cena bytu (€) <span class="val" id="v_propertyPrice"></span></label><input type="range" id="propertyPrice" min="60000" max="300000" step="5000"></div>
     <div class="field"><label>Akontácia (€) <span class="val" id="v_downPayment"></span></label><input type="range" id="downPayment" min="10000" max="90000" step="1000"></div>
     <div class="field"><label>Úrok hypotéky <span class="val" id="v_mortgageRate"></span></label><input type="range" id="mortgageRate" min="1" max="9" step="0.1"></div>
-    <div class="note">20-ročný priemer sadzieb na Slovensku (~2006–2025): od &gt;6 % (2007) cez historické minimum ~1,3 % (2019) po súčasných ~4 % (2023–2025) — jednoduchý priemer vychádza na cca <b>3,5 %</b> (default). Priemer len za posledný celý cyklus lacných peňazí 2013–2023 (vrátane návratu vyšších sadzieb) vychádza nižšie, okolo <b>2,3 %</b> — skús si to prepnúť a pozri rozdiel.</div>
+    <div class="note">Trhová hypotéka na Slovensku existuje od <b>1998</b> (prvá VÚB hypotéka 13,5 %). Za ~28 merateľných rokov (1998–2026) jednoduchý priemer sadzieb vychádza na cca <b>5–5,5 %</b> (časť rokov 1999–2010 je trendová interpolácia). Za posledných 20 rokov (2006–2025) s dobre podloženými dátami je priemer ~<b>3,5 %</b> — to platí pre <b>Laca a Milana</b> (default vyššie). <b>Jano</b> má vlastný slider nižšie s dlhším historickým priemerom, lebo dokupuje byty počas celej simulácie.</div>
     <div class="field"><label>Splatnosť hypotéky (roky) <span class="val" id="v_mortgageTerm"></span></label><input type="range" id="mortgageTerm" min="10" max="40" step="1"></div>
     <div class="field"><label>Rast cien nehnuteľností (ročne) <span class="val" id="v_reGrowth"></span></label><input type="range" id="reGrowth" min="-2" max="10" step="0.1"></div>
     <div class="field"><label>Náklady na správu/opravy/dane (% z hodnoty/rok) <span class="val" id="v_maintenancePct"></span></label><input type="range" id="maintenancePct" min="0" max="3" step="0.1"></div>
@@ -496,6 +496,8 @@
 
   <div class="ctrl-group">
     <h4>Jano — ďalšie byty na prenájom (páka 1:5)</h4>
+    <div class="field"><label>Úrok hypotéky (Jano — všetky jeho byty) <span class="val" id="v_janoMortgageRate"></span></label><input type="range" id="janoMortgageRate" min="1" max="15" step="0.1"></div>
+    <div class="note">Default <b>5,25 %</b> = stred pásma ~5–5,5 % za obdobie existencie hypoték na SK (~1998–2026): od 13,5 % (1998) cez pokles po EÚ/eurozóne, minimum 1,33 % (2019), skok na ~4 % (2023–2025). Laco a Milan používajú kratší 20-ročný priemer (3,5 %). Jano financuje viac bytov počas simulácie, preto má dlhší historický priemer. Zdroje: Financer.sk, Banky.sk.</div>
     <div class="field"><label>Trhový nájom investičného bytu (€/mes pri cene bytu vyššie) <span class="val" id="v_rentalRent0"></span></label><input type="range" id="rentalRent0" min="300" max="1200" step="10"></div>
     <div class="field"><label>Priemerná neobsadenosť (mesiace prázdne/rok, %) <span class="val" id="v_rentalVacancyPct"></span></label><input type="range" id="rentalVacancyPct" min="0" max="20" step="0.5"></div>
     <div class="field"><label>Opravy, správa, poistenie (% z hodnoty bytu/rok) <span class="val" id="v_rentalOpexPct"></span></label><input type="range" id="rentalOpexPct" min="0.5" max="4" step="0.1"></div>
@@ -554,7 +556,7 @@
 <div class="verdict">
   <h2>Kto mal v podcaste pravdu?</h2>
   <p>Podľa tohto modelu — <b>obaja, len o inej veci.</b> Dubec má pravdu, že hypotéka je mimoriadne silná páka, ktorú bežný človek nikde inde takto lacno a s takouto ochranou pred margin callom nedostane — kým riadne splácaš, banka sa nepýta, o koľko klesla cena bytu. Karpiš má pravdu, že rovnaký (alebo menší) pákový efekt vieš v princípe dosiahnuť aj na akciách, s vyššou likviditou a diverzifikáciou — ale iba ak vieš zohnať porovnateľne lacný úver a psychicky aj inštitucionálne uneseš riziko margin callu, ktoré pri hypotéke nehrozí.</p>
-  <p>Zaujímavé je, že najviac zo všetkých v tomto modeli zarobí <b>Jano</b> — nie preto, že by mal lepšie predpoklady než Laco (rovnaký byt, rovnaká hypotéka), ale preto, že opakovane recykluje tú istú lacnú páku na ďalšie byty namiesto toho, aby prebytok investoval do akcií. To je v princípe presne to, čo Dubec v podcaste opisoval ako "nakupovanie ďalšieho bytu na tej istej ulici" — a matematicky to naozaj funguje, pokiaľ sa dá opakovane financovať za nízky úrok a nájomník platí. Cena je vyššia koncentrácia rizika v jednom aktíve (nehnuteľnosti v jednom meste) a citlivosť na neobsadenosť/opravy, ktoré sme do modelu zámerne pridali.</p>
+  <p>Zaujímavé je, že najviac zo všetkých v tomto modeli zarobí <b>Jano</b> — nie preto, že by mal lepšie predpoklady než Laco (rovnaký byt), ale preto, že opakovane recykluje páku na ďalšie byty namiesto toho, aby prebytok investoval do akcií. V defaultnom scenári má Jano dokonca drahšiu hypotéku (~5,25 %, ~28-ročný priemer od 1998) než Laco (~3,5 %, 20-ročný priemer) — a napriek tomu vedie, ak nájom pokryje vyššie splátky. To je presne Dubecov argument o „nakupovaní ďalšieho bytu na tej istej ulici".</p>
   <p>Skutočné jadro sporu (ktoré sa v rozhovore nikdy jasne nevyslovilo) je jednoduchá otázka do budúcnosti: <b>bude rozdiel medzi budúcim výnosom akcií a cenou úveru väčší, alebo menší, než rozdiel medzi budúcim rastom cien nehnuteľností a cenou hypotéky?</b> Za posledných 15–20 rokov na Slovensku to (tesne) vychádzalo v prospech nehnuteľností najmä vďaka extrémne lacným hypotékam 2015–2021. Skús si to v kalkulačke vyššie.</p>
   <div class="split">
     <div>
@@ -569,7 +571,7 @@
 </div>
 
 <footer>
-  <p><b>Metodika:</b> mesačná simulácia cash-flow pre každú osobu; príjem a nájom rastú ročne o zadané tempo, hypotéka je anuitná so zafixovanou sadzbou na celú dobu (v realite sa na Slovensku fixuje na 3–10 rokov — riziko refixácie nie je v čísle zohľadnené, len v bulletoch). Jano dokupuje ďalšie byty na prenájom vždy, keď mu úspory + čistý nájom (po odpočítaní neobsadenosti a opráv) postačia na akontáciu ďalšieho bytu pri aktuálnej trhovej cene. Laco aj Jožo a Fero mesačne DCA investujú prebytok do akcií. Milan prebytok len sporí pri bezpečnej sadzbe. Reálne (infláciou očistené) hodnoty delia nominálny výsledok kumulovanou infláciou za celý horizont.</p>
+  <p><b>Metodika:</b> mesačná simulácia cash-flow pre každú osobu; príjem a nájom rastú ročne o zadané tempo, hypotéka je anuitná so zafixovanou sadzbou na celú dobu (v realite sa na Slovensku fixuje na 3–10 rokov — riziko refixácie nie je v čísle zohľadnené, len v bulletoch). Laco a Milan používajú jednu sadzbu hypotéky (default ~3,5 %, 20-ročný priemer 2006–2025); Jano má vlastnú sadzbu (default ~5,25 %, ~28-ročný priemer od vzniku trhu 1998). Jano dokupuje ďalšie byty na prenájom vždy, keď mu úspory + čistý nájom postačia na akontáciu. Laco aj Jožo a Fero mesačne DCA investujú prebytok do akcií. Milan prebytok len sporí pri bezpečnej sadzbe.</p>
   <p><b>Zdroje pre východiskové hodnoty:</b> NBS index cien nehnuteľností na bývanie, ŠÚ SR, Eurostat House Price Index, Trading Economics (SK/IT/HU/PL), Finsider.sk (vývoj miezd, nájmov a úrokových sadzieb), Banky.sk a Financer.sk (historický vývoj hypoték 1998–2026), Karpišove a Dubecove čísla z podcastu „Dubec vs. Karpiš a byty, byty, byty" (140 % rast nehnuteľností a ~25–33 % rast nájmu za 15 rokov, S&P 500 ~470 % za 15 rokov, dvojizbák v Ružinove za 650 €/mes). Toto sú orientačné historické priemery, nie garancia budúceho vývoja — uprav si ich podľa vlastného názoru.</p>
 </footer>
 
@@ -577,19 +579,19 @@
 
 <script>
 const COUNTRY_PRESETS = {
-  sk: { label:"🇸🇰 Slovensko", reGrowth:6.0, rentGrowth:2.0, inflation:3.5, wageGrowth:5.0, mortgageRate:3.5, marginRate:5.5,
-        note:"Základný scenár — historické priemery SK posledných ~15–20 rokov (byty +140 % / 15 r., nájmy len +25–33 % / 15 r., hypotéky v priemere ~3,5 %/rok)." },
-  it: { label:"🇮🇹 Taliansko", reGrowth:1.0, rentGrowth:1.5, inflation:2.0, wageGrowth:2.5, mortgageRate:3.0, marginRate:5.0,
+  sk: { label:"🇸🇰 Slovensko", reGrowth:6.0, rentGrowth:2.0, inflation:3.5, wageGrowth:5.0, mortgageRate:3.5, janoMortgageRate:5.25, marginRate:5.5,
+        note:"Základný scenár SK — byty +140 %/15 r., nájmy +25–33 %/15 r., hypotéka Laco/Milan ~3,5 % (20 r.), Jano ~5,25 % (~28 r. od 1998)." },
+  it: { label:"🇮🇹 Taliansko", reGrowth:1.0, rentGrowth:1.5, inflation:2.0, wageGrowth:2.5, mortgageRate:3.0, janoMortgageRate:4.5, marginRate:5.0,
         note:"Taliansky trh s bytmi je od roku 2010 prakticky stagnujúci až mierne klesajúci v reálnych cenách — klasický príklad, že zlatá tehla nefunguje všade." },
-  hu: { label:"🇭🇺 Maďarsko", reGrowth:7.0, rentGrowth:5.0, inflation:5.0, wageGrowth:7.0, mortgageRate:5.5, marginRate:6.5,
+  hu: { label:"🇭🇺 Maďarsko", reGrowth:7.0, rentGrowth:5.0, inflation:5.0, wageGrowth:7.0, mortgageRate:5.5, janoMortgageRate:7.0, marginRate:6.5,
         note:"Maďarské byty rástli nominálne ešte rýchlejšie než slovenské, ale pri vyššej inflácii aj úrokoch — a s výrazným menovým rizikom HUF." },
-  pl: { label:"🇵🇱 Poľsko", reGrowth:7.0, rentGrowth:4.0, inflation:4.0, wageGrowth:6.0, mortgageRate:4.5, marginRate:6.0,
+  pl: { label:"🇵🇱 Poľsko", reGrowth:7.0, rentGrowth:4.0, inflation:4.0, wageGrowth:6.0, mortgageRate:4.5, janoMortgageRate:6.0, marginRate:6.0,
         note:"Poľské byty od 2005 vzrástli nominálne zhruba 3-násobne, podobne ako maďarské — región CEE ako celok mal masívny catch-up rast, nielen Slovensko." },
 };
 
 const DEFAULTS = {
   horizonYears:20, salary0:1500, baseExp0:500, wageGrowth:5.0, inflation:3.5,
-  propertyPrice:150000, downPayment:30000, mortgageRate:3.5, mortgageTerm:30,
+  propertyPrice:150000, downPayment:30000, mortgageRate:3.5, janoMortgageRate:5.25, mortgageTerm:30,
   maintenancePct:1.0, buyingCostPct:3.0, rent0:400, rentGrowth:2.0,
   reGrowth:6.0, spxReturn:9.0, feroLoan:50000, feroLoanRate:7.0, feroLoanTerm:10, feroDcaYears:5,
   marginRate:5.5, showKarpis:true,
@@ -610,11 +612,13 @@ function pmt(principal, annualRatePct, years){
 function simulate(p){
   const months = p.horizonYears*12;
   const mortPmt = pmt(p.propertyPrice - p.downPayment, p.mortgageRate, p.mortgageTerm);
+  const janoMortPmt = pmt(p.propertyPrice - p.downPayment, p.janoMortgageRate, p.mortgageTerm);
   const feroLoanPmt = pmt(p.feroLoan, p.feroLoanRate, p.feroLoanTerm);
   const spxM = Math.pow(1+p.spxReturn/100, 1/12)-1;
   const marginLoan = p.downPayment;
   const marginRM = p.marginRate/100/12;
   const mortRM = p.mortgageRate/100/12;
+  const janoMortRM = p.janoMortgageRate/100/12;
   const loanRM = p.feroLoanRate/100/12;
   const safeM = p.safeAssetRate/100/12;
   const feroDcaMonthly = p.feroLoan/(p.feroDcaYears*12);
@@ -683,7 +687,7 @@ function simulate(p){
     const karpisSurplus = Math.max(savingsCap - rent - marginInterest, 0);
     karpisLiquid = karpisLiquid*(1+spxM) + karpisSurplus;
 
-    const janoOwnCost = mortPmt + maint;
+    const janoOwnCost = janoMortPmt + maint;
     let rentalCF = 0;
     janoUnits.forEach(u=>{
       const yrsHeld = (m-u.pm)/12;
@@ -692,17 +696,17 @@ function simulate(p){
       const effRent = rnt*(1-p.rentalVacancyPct/100);
       const opex = val*(p.rentalOpexPct/100)/12;
       rentalCF += effRent - opex - u.pmt;
-      if(u.bal>0){ const i=u.bal*mortRM, pr=u.pmt-i; u.bal=Math.max(u.bal-pr,0); }
+      if(u.bal>0){ const i=u.bal*janoMortRM, pr=u.pmt-i; u.bal=Math.max(u.bal-pr,0); }
     });
     const janoNetM = savingsCap - janoOwnCost + rentalCF;
     janoCash = janoCash*(1+safeM) + janoNetM;
-    if(janoOwnBal>0){ const i=janoOwnBal*mortRM, pr=mortPmt-i; janoOwnBal=Math.max(janoOwnBal-pr,0); }
+    if(janoOwnBal>0){ const i=janoOwnBal*janoMortRM, pr=janoMortPmt-i; janoOwnBal=Math.max(janoOwnBal-pr,0); }
     const nextPrice = p.propertyPrice*Math.pow(1+p.reGrowth/100, (m+1)/12);
     const needed = nextPrice*downPct + nextPrice*(p.buyingCostPct/100);
     if(janoCash >= needed){
       janoCash -= needed;
       const loanAmt = nextPrice - nextPrice*downPct;
-      janoUnits.push({pm:m+1, price:nextPrice, bal:loanAmt, pmt:pmt(loanAmt, p.mortgageRate, p.mortgageTerm)});
+      janoUnits.push({pm:m+1, price:nextPrice, bal:loanAmt, pmt:pmt(loanAmt, p.janoMortgageRate, p.mortgageTerm)});
     }
 
     snap(m+1);
@@ -766,12 +770,12 @@ function findCrossoverRe(p, targetLo=-2, targetHi=15){
 }
 
 const FIELD_KEYS = ['horizonYears','inflation','wageGrowth','salary0','baseExp0','propertyPrice','downPayment',
-  'mortgageRate','mortgageTerm','reGrowth','maintenancePct','buyingCostPct','rentalRent0','rentalVacancyPct',
+  'mortgageRate','janoMortgageRate','mortgageTerm','reGrowth','maintenancePct','buyingCostPct','rentalRent0','rentalVacancyPct',
   'rentalOpexPct','rent0','rentGrowth','spxReturn','safeAssetRate',
   'feroLoan','feroLoanRate','feroLoanTerm','feroDcaYears','marginRate'];
 
 function formatVal(key, val){
-  if(['inflation','wageGrowth','mortgageRate','reGrowth','maintenancePct','buyingCostPct','rentGrowth','spxReturn','feroLoanRate','marginRate','rentalVacancyPct','rentalOpexPct','safeAssetRate'].includes(key)) return fmtPct(val);
+  if(['inflation','wageGrowth','mortgageRate','janoMortgageRate','reGrowth','maintenancePct','buyingCostPct','rentGrowth','spxReturn','feroLoanRate','marginRate','rentalVacancyPct','rentalOpexPct','safeAssetRate'].includes(key)) return fmtPct(val);
   if(['horizonYears','mortgageTerm','feroLoanTerm','feroDcaYears'].includes(key)) return val+' r.';
   return fmtEUR(val);
 }
@@ -808,7 +812,7 @@ function buildPresetButtons(){
     btn.addEventListener('click', ()=>{
       Object.assign(state, {
         reGrowth:cfg.reGrowth, rentGrowth:cfg.rentGrowth, inflation:cfg.inflation,
-        wageGrowth:cfg.wageGrowth, mortgageRate:cfg.mortgageRate, marginRate:cfg.marginRate,
+        wageGrowth:cfg.wageGrowth, mortgageRate:cfg.mortgageRate, janoMortgageRate:cfg.janoMortgageRate, marginRate:cfg.marginRate,
       });
       FIELD_KEYS.forEach(k=>{
         const input = document.getElementById(k);
@@ -944,7 +948,7 @@ function render(){
   const janoVsLaco = r.jano.net - r.laco.net;
   document.getElementById('crossoverBox').innerHTML = `
     <div class="line">📍 Pri aktuálnych nastaveniach po ${state.horizonYears} rokoch vedie <b>${allVals[0].n}</b> s čistým majetkom ${fmtEUR(allVals[0].v)}.</div>
-    <div class="line">🏠 Jano (byty na prenájom, ${r.jano.nUnits}× dokúpil) končí o <b>${fmtEUR(Math.abs(janoVsLaco))}</b> ${janoVsLaco>=0?'pred':'za'} Lacom (jeden byt + akcie) — čistý efekt opakovanej páky na nehnuteľnosti oproti akciám pri rovnakej hypotéke.</div>
+    <div class="line">🏠 Jano (byty na prenájom, ${r.jano.nUnits}× dokúpil, hypotéka ${state.janoMortgageRate} %) končí o <b>${fmtEUR(Math.abs(janoVsLaco))}</b> ${janoVsLaco>=0?'pred':'za'} Lacom (hypotéka ${state.mortgageRate} % + akcie) — čistý efekt opakovanej páky na nehnuteľnosti oproti akciám.</div>
     <div class="line">⚖️ Karpišova páka 1:1 na akcie prekonáva Lacov byt, ak je očakávaný ročný výnos akcií vyšší než približne <b>${crossSpx.toFixed(1)}%</b> (aktuálne nastavené na ${state.spxReturn}%; rast nehnuteľností je ${state.reGrowth}%).</div>
     <div class="line">⚖️ Nepákovaný Jožo (bez úveru) dobehne Laca, ak rast cien nehnuteľností klesne pod približne <b>${crossRe.toFixed(1)}%</b> ročne (aktuálne ${state.reGrowth}%), pri výnose akcií ${state.spxReturn}%.</div>
   `;
