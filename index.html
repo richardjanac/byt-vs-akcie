@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Byt vs. akcie: Jano, Jožo, Fero (a Karpišova páka) — 20 rokov</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1216; --panel:#171b21; --panel2:#1d222a; --border:#2a2f38;
+    --text:#e8eaed; --muted:#9aa4b2; --accent:#4f8cff; --accent2:#3ecf8e;
+    --jano:#4f8cff; --jozo:#3ecf8e; --fero:#ffb454; --karpis:#c792ea;
+    --risk:#ff6b6b; --benefit:#3ecf8e;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.5;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 20px 80px;}
+  header{margin-bottom:28px;}
+  h1{font-size:1.7rem; margin:0 0 8px; letter-spacing:-0.01em;}
+  h1 span{color:var(--muted); font-weight:400; font-size:1rem; display:block; margin-top:6px;}
+  .intro{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; font-size:0.95rem; color:var(--muted);}
+  .intro b{color:var(--text);}
+  .intro p{margin:0 0 10px;}
+  .intro p:last-child{margin-bottom:0;}
+
+  .presets{display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 6px;}
+  .presets button{
+    background:var(--panel); border:1px solid var(--border); color:var(--text);
+    padding:9px 16px; border-radius:999px; font-size:0.88rem; cursor:pointer; transition:.15s;
+  }
+  .presets button:hover{border-color:var(--accent);}
+  .presets button.active{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
+  .preset-note{font-size:0.82rem; color:var(--muted); margin-bottom:20px;}
+
+  details.controls{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:26px; padding:4px 20px 18px;}
+  details.controls summary{cursor:pointer; padding:14px 0; font-weight:600; font-size:1rem; list-style:none; display:flex; align-items:center; gap:8px;}
+  details.controls summary::-webkit-details-marker{display:none;}
+  details.controls summary:before{content:"⚙"; font-size:1rem;}
+  .ctrl-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px 22px; margin-top:8px;}
+  .ctrl-group h4{margin:0 0 10px; font-size:0.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:6px;}
+  .field{margin-bottom:12px;}
+  .field label{display:flex; justify-content:space-between; font-size:0.83rem; color:var(--muted); margin-bottom:4px;}
+  .field label .val{color:var(--text); font-weight:600; font-variant-numeric:tabular-nums;}
+  .field input[type=range]{width:100%; accent-color:var(--accent);}
+  .karpis-toggle{display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--muted); margin-top:4px;}
+
+  .results-top{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-bottom:22px;}
+  .stat-card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; border-top:3px solid var(--c);}
+  .stat-card h3{margin:0 0 4px; font-size:0.95rem;}
+  .stat-card .big{font-size:1.5rem; font-weight:700; font-variant-numeric:tabular-nums;}
+  .stat-card .sub{font-size:0.78rem; color:var(--muted); margin-top:2px;}
+  .stat-card .bar{height:8px; border-radius:4px; background:var(--panel2); margin-top:10px; overflow:hidden; display:flex;}
+  .stat-card .bar .liquid{background:var(--c); opacity:.55;}
+  .stat-card .bar .illiquid{background:var(--c);}
+  .legend-mini{font-size:0.72rem; color:var(--muted); margin-top:4px; display:flex; gap:10px;}
+
+  .chart-panel{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:22px;}
+  .chart-panel h3{margin:0 0 4px;}
+  .chart-panel .sub{color:var(--muted); font-size:0.85rem; margin-bottom:14px;}
+  canvas{max-height:360px;}
+
+  .crossover{background:linear-gradient(135deg,#1d2430,#171b21); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; margin-bottom:26px; font-size:0.92rem;}
+  .crossover b{color:var(--accent);}
+  .crossover .line{margin-bottom:6px;}
+
+  .persons{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-bottom:10px;}
+  .person-card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:20px; border-top:4px solid var(--c);}
+  .person-card h3{margin:0 0 2px; display:flex; align-items:center; gap:8px;}
+  .person-card .dot{width:10px; height:10px; border-radius:50%; background:var(--c); display:inline-block;}
+  .person-card .tagline{color:var(--muted); font-size:0.85rem; margin-bottom:14px;}
+  .person-card .netnum{font-size:1.3rem; font-weight:700; margin-bottom:14px;}
+  .person-card .netnum small{font-size:0.75rem; color:var(--muted); font-weight:400; display:block;}
+  .blocklabel{font-size:0.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:14px 0 6px; font-weight:700;}
+  .blocklabel.risk{color:var(--risk);}
+  .blocklabel.benefit{color:var(--benefit);}
+  ul.bullets{margin:0; padding-left:18px; font-size:0.87rem;}
+  ul.bullets li{margin-bottom:6px; color:#cfd4dc;}
+  .path{background:var(--panel2); border-radius:10px; padding:12px 14px; margin-top:14px; font-size:0.87rem;}
+  .path b{color:var(--accent2); display:block; margin-bottom:4px; font-size:0.78rem; text-transform:uppercase; letter-spacing:.04em;}
+
+  .verdict{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:22px; margin-top:30px;}
+  .verdict h2{margin-top:0;}
+  .verdict p{color:#cfd4dc; font-size:0.94rem;}
+  .verdict .split{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:14px;}
+  .verdict .split > div{background:var(--panel2); border-radius:10px; padding:14px 16px; font-size:0.88rem;}
+  .verdict .split h4{margin:0 0 8px; font-size:0.85rem;}
+
+  footer{margin-top:40px; font-size:0.78rem; color:var(--muted); border-top:1px solid var(--border); padding-top:16px;}
+  footer a{color:var(--accent);}
+  @media (max-width:640px){ .verdict .split{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Byt vs. akcie: Jano, Jožo, Fero a Karpišova páka
+    <span>Interaktívny model k diskusii Dubec vs. Karpiš — meň si predpoklady a pozri, kedy vyhráva nehnuteľnosť a kedy akcie.</span>
+  </h1>
+  <div class="intro">
+    <p><b>Prečo tento nástroj existuje:</b> v podcaste Dubec vs. Karpiš zaznelo veľa čísel (140 % vs. 470 % za 15 rokov, výnosové percento 4,5 %, páka 1:1 na S&P 500...), ale rozhovor sa preskakoval medzi témami a nikdy sa nedopracoval k jasnému, počítateľnému porovnaniu pre bežného človeka. Tento model to skúša doriešiť na troch fiktívnych 20-ročných životných cestách — a pridáva aj štvrtú, ktorá doslova testuje Karpišovo tvrdenie o páke 1:1.</p>
+    <p><b>Dôležité:</b> toto nie je predikcia budúcnosti, je to kalkulačka predpokladov. Všetky čísla nižšie sú upraviteľné — základné hodnoty vychádzajú z historických priemerov posledných ~15–20 rokov (zdroje v päte stránky), ale budúci vývoj môže byť úplne iný (aj Dubec aj Karpiš sa v podcaste zhodli, že posledných 20 rokov na Slovensku sa pravdepodobne nezopakuje).</p>
+  </div>
+</header>
+
+<div class="presets" id="presets"></div>
+<div class="preset-note">Scenáre menia predpoklady o raste cien nehnuteľností, nájmu, inflácie, miezd a úrokov. Ceny bytu, nájmu aj mzdy ostávajú v eurových ekvivalentoch rovnaké naprieč krajinami, aby bolo vidieť čistý efekt rozdielnych mier rastu.</div>
+
+<details class="controls" open>
+<summary>Predpoklady modelu (klikni a uprav)</summary>
+<div class="ctrl-grid">
+
+  <div class="ctrl-group">
+    <h4>Makro a horizont</h4>
+    <div class="field"><label>Horizont <span class="val" id="v_horizonYears"></span></label><input type="range" id="horizonYears" min="10" max="30" step="1"></div>
+    <div class="field"><label>Inflácia (ročne) <span class="val" id="v_inflation"></span></label><input type="range" id="inflation" min="0" max="10" step="0.1"></div>
+    <div class="field"><label>Rast čistej mzdy (ročne) <span class="val" id="v_wageGrowth"></span></label><input type="range" id="wageGrowth" min="0" max="10" step="0.1"></div>
+    <div class="field"><label>Štartovací čistý príjem (spolu, €/mes) <span class="val" id="v_salary0"></span></label><input type="range" id="salary0" min="800" max="3000" step="50"></div>
+    <div class="field"><label>Základné životné náklady mimo bývania (€/mes) <span class="val" id="v_baseExp0"></span></label><input type="range" id="baseExp0" min="200" max="1000" step="25"></div>
+  </div>
+
+  <div class="ctrl-group">
+    <h4>Byt — Jano</h4>
+    <div class="field"><label>Cena bytu (€) <span class="val" id="v_propertyPrice"></span></label><input type="range" id="propertyPrice" min="60000" max="300000" step="5000"></div>
+    <div class="field"><label>Akontácia (€) <span class="val" id="v_downPayment"></span></label><input type="range" id="downPayment" min="10000" max="90000" step="1000"></div>
+    <div class="field"><label>Úrok hypotéky <span class="val" id="v_mortgageRate"></span></label><input type="range" id="mortgageRate" min="1" max="9" step="0.1"></div>
+    <div class="field"><label>Splatnosť hypotéky (roky) <span class="val" id="v_mortgageTerm"></span></label><input type="range" id="mortgageTerm" min="10" max="40" step="1"></div>
+    <div class="field"><label>Rast cien nehnuteľností (ročne) <span class="val" id="v_reGrowth"></span></label><input type="range" id="reGrowth" min="-2" max="10" step="0.1"></div>
+    <div class="field"><label>Náklady na správu/opravy/dane (% z hodnoty/rok) <span class="val" id="v_maintenancePct"></span></label><input type="range" id="maintenancePct" min="0" max="3" step="0.1"></div>
+    <div class="field"><label>Transakčné náklady kúpy (% z ceny) <span class="val" id="v_buyingCostPct"></span></label><input type="range" id="buyingCostPct" min="0" max="8" step="0.5"></div>
+  </div>
+
+  <div class="ctrl-group">
+    <h4>Nájom — Jožo a Fero</h4>
+    <div class="field"><label>Spoločné bývanie, nájom (€/mes) <span class="val" id="v_rent0"></span></label><input type="range" id="rent0" min="150" max="900" step="10"></div>
+    <div class="field"><label>Rast nájmu (ročne) <span class="val" id="v_rentGrowth"></span></label><input type="range" id="rentGrowth" min="-2" max="8" step="0.1"></div>
+  </div>
+
+  <div class="ctrl-group">
+    <h4>Akcie (S&P 500)</h4>
+    <div class="field"><label>Očakávaný ročný výnos <span class="val" id="v_spxReturn"></span></label><input type="range" id="spxReturn" min="0" max="15" step="0.1"></div>
+  </div>
+
+  <div class="ctrl-group">
+    <h4>Fero — spotrebný úver do akcií</h4>
+    <div class="field"><label>Výška úveru (€) <span class="val" id="v_feroLoan"></span></label><input type="range" id="feroLoan" min="10000" max="100000" step="1000"></div>
+    <div class="field"><label>Úrok úveru <span class="val" id="v_feroLoanRate"></span></label><input type="range" id="feroLoanRate" min="2" max="15" step="0.1"></div>
+    <div class="field"><label>Splatnosť úveru (roky) <span class="val" id="v_feroLoanTerm"></span></label><input type="range" id="feroLoanTerm" min="3" max="15" step="1"></div>
+    <div class="field"><label>DCA obdobie vkladania (roky) <span class="val" id="v_feroDcaYears"></span></label><input type="range" id="feroDcaYears" min="1" max="10" step="1"></div>
+  </div>
+
+  <div class="ctrl-group">
+    <h4>Bonus: Karpišova páka 1:1</h4>
+    <div class="karpis-toggle"><input type="checkbox" id="showKarpis" checked><label for="showKarpis">Zobraziť scenár „páka 1:1 na akcie namiesto bytu"</label></div>
+    <div class="field"><label>Úrok maržového/lombardného úveru <span class="val" id="v_marginRate"></span></label><input type="range" id="marginRate" min="1" max="10" step="0.1"></div>
+  </div>
+
+</div>
+</details>
+
+<div class="results-top" id="statCards"></div>
+
+<div class="chart-panel">
+  <h3>Čistý majetok v čase (nominálne, €)</h3>
+  <div class="sub">Likvidný (akcie) + nelikvidný (byt mínus zostatok hypotéky) majetok za 0–<span id="horizonLabel">20</span> rokov.</div>
+  <canvas id="chartLine"></canvas>
+</div>
+
+<div class="crossover" id="crossoverBox"></div>
+
+<div class="chart-panel">
+  <h3>Kedy vyhráva čo? Citlivosť na dva kľúčové predpoklady</h3>
+  <div class="sub">Čistý majetok po <span id="horizonLabel2">20</span> rokoch v závislosti od očakávaného výnosu akcií (os X), pri aktuálne nastavenom raste cien nehnuteľností.</div>
+  <canvas id="chartSensitivity"></canvas>
+</div>
+
+<div class="persons" id="personCards"></div>
+
+<div class="verdict">
+  <h2>Kto mal v podcaste pravdu?</h2>
+  <p>Podľa tohto modelu — <b>obaja, len o inej veci.</b> Dubec má pravdu, že hypotéka je mimoriadne silná páka, ktorú bežný človek nikde inde takto lacno a s takouto ochranou pred margin callom nedostane — kým riadne splácaš, banka sa nepýta, o koľko klesla cena bytu. Karpiš má pravdu, že rovnaký (alebo menší) pákový efekt vieš v princípe dosiahnuť aj na akciách, s vyššou likviditou a diverzifikáciou — ale iba ak vieš zohnať porovnateľne lacný úver a psychicky aj inštitucionálne uneseš riziko margin callu, ktoré pri hypotéke nehrozí.</p>
+  <p>Skutočné jadro sporu (ktoré sa v rozhovore nikdy jasne nevyslovilo) je jednoduchá otázka do budúcnosti: <b>bude rozdiel medzi budúcim výnosom akcií a cenou úveru väčší, alebo menší, než rozdiel medzi budúcim rastom cien nehnuteľností a cenou hypotéky?</b> Za posledných 15–20 rokov na Slovensku to (tesne) vychádzalo v prospech nehnuteľností najmä vďaka extrémne lacným hypotékam 2015–2021. Pri dnešných úrokoch (~4 %) je to podľa tohto modelu prekvapivo vyrovnané — stačí posunúť očakávaný výnos akcií o 1–2 percentuálne body a poradie sa otočí. Skús si to v kalkulačke vyššie.</p>
+  <div class="split">
+    <div>
+      <h4 style="color:var(--jano)">Argument pre nehnuteľnosť (Dubec)</h4>
+      <p style="margin:0">Banka ťa nikdy nevyzve „dorovnaj alebo predávame", kým platíš. To je reálna, nie len teoretická výhoda voči pákovaným akciám v kríze — ľudia v roku 2008 aj 2022 boli nútení predávať pákované akciové pozície presne na dne. Pri byte túto nútenú stratu nezažiješ, ak neprídeš o príjem.</p>
+    </div>
+    <div>
+      <h4 style="color:var(--karpis)">Argument pre akcie (Karpiš)</h4>
+      <p style="margin:0">Nemusíš si brať 5× páku (80 % LTV), aby si dosiahol podobný výnos ako na byte — pri akciách s dlhodobo vyšším očakávaným výnosom stačí menšia páka, čiže menšie riziko. A pri poklese cien nehnuteľností (ktorý sa tiež deje) neexistuje nikto, kto by ti "kúpil byt späť za rovnakú cenu" — likvidita akcií je v skutočnosti výhoda, nie len riziko.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><b>Metodika:</b> mesačná simulácia cash-flow pre každú osobu; príjem a nájom rastú ročne o zadané tempo, hypotéka je anuitná so zafixovanou sadzbou na celú dobu (v realite sa na Slovensku fixuje na 3–10 rokov — riziko refixácie nie je v čísle zohľadnené, len v bulletoch). Prebytok príjmu nad životnými nákladmi a bývaním sa mesačne DCA investuje do akcií pri zadanom výnose. Reálne (infláciou očistené) hodnoty delia nominálny výsledok kumulovanou infláciou za celý horizont.</p>
+  <p><b>Zdroje pre východiskové hodnoty:</b> NBS index cien nehnuteľností na bývanie, ŠÚ SR, Eurostat House Price Index, Trading Economics (SK/IT/HU/PL), Finsider.sk (vývoj miezd a nájmov), Karpišove a Dubecove čísla z podcastu „Dubec vs. Karpiš a byty, byty, byty" (140 % rast nehnuteľností a ~25–33 % rast nájmu za 15 rokov, S&P 500 ~470 % za 15 rokov). Toto sú orientačné historické priemery, nie garancia budúceho vývoja — uprav si ich podľa vlastného názoru.</p>
+</footer>
+
+</div>
+
+<script>
+const COUNTRY_PRESETS = {
+  sk: { label:"🇸🇰 Slovensko", reGrowth:6.0, rentGrowth:2.0, inflation:3.5, wageGrowth:5.0, mortgageRate:4.0, marginRate:5.5,
+        note:"Základný scenár — historické priemery SK posledných ~15–20 rokov (byty +140 % / 15 r., nájmy len +25–33 % / 15 r.)." },
+  it: { label:"🇮🇹 Taliansko", reGrowth:1.0, rentGrowth:1.5, inflation:2.0, wageGrowth:2.5, mortgageRate:3.5, marginRate:5.0,
+        note:"Taliansky trh s bytmi je od roku 2010 prakticky stagnujúci až mierne klesajúci v reálnych cenách — klasický príklad, že zlatá tehla nefunguje všade." },
+  hu: { label:"🇭🇺 Maďarsko", reGrowth:7.0, rentGrowth:5.0, inflation:5.0, wageGrowth:7.0, mortgageRate:6.0, marginRate:6.5,
+        note:"Maďarské byty rástli nominálne ešte rýchlejšie než slovenské, ale pri vyššej inflácii aj úrokoch — a s výrazným menovým rizikom HUF." },
+  pl: { label:"🇵🇱 Poľsko", reGrowth:7.0, rentGrowth:4.0, inflation:4.0, wageGrowth:6.0, mortgageRate:5.0, marginRate:6.0,
+        note:"Poľské byty od 2005 vzrástli nominálne zhruba 3-násobne, podobne ako maďarské — región CEE ako celok mal masívny catch-up rast, nielen Slovensko." },
+};
+
+const DEFAULTS = {
+  horizonYears:20, salary0:1500, baseExp0:500, wageGrowth:5.0, inflation:3.5,
+  propertyPrice:150000, downPayment:30000, mortgageRate:4.0, mortgageTerm:30,
+  maintenancePct:1.0, buyingCostPct:3.0, rent0:400, rentGrowth:2.0,
+  reGrowth:6.0, spxReturn:9.0, feroLoan:50000, feroLoanRate:7.0, feroLoanTerm:10, feroDcaYears:5,
+  marginRate:5.5, showKarpis:true,
+};
+
+let state = {...DEFAULTS};
+
+function fmtEUR(n){ return Math.round(n).toLocaleString('sk-SK') + ' €'; }
+function fmtPct(n){ return n.toFixed(1) + ' %'; }
+
+function pmt(principal, annualRatePct, years){
+  const r = annualRatePct/100/12, n = years*12;
+  if(r===0) return principal/n;
+  return principal*r/(1-Math.pow(1+r,-n));
+}
+
+function simulate(p){
+  const months = p.horizonYears*12;
+  const mortgagePmt = pmt(p.propertyPrice - p.downPayment, p.mortgageRate, p.mortgageTerm);
+  const feroLoanPmt = pmt(p.feroLoan, p.feroLoanRate, p.feroLoanTerm);
+  const spxM = Math.pow(1+p.spxReturn/100, 1/12)-1;
+  const marginLoan = p.downPayment;
+  const marginRM = p.marginRate/100/12;
+
+  let janoLiquid = -p.propertyPrice*(p.buyingCostPct/100);
+  let jozoLiquid = 0, feroLiquid = 0, karpisLiquid = p.downPayment*2;
+  let mortBal = p.propertyPrice - p.downPayment;
+  const mortRM = p.mortgageRate/100/12;
+  let loanBal = p.feroLoan;
+  const loanRM = p.feroLoanRate/100/12;
+  const feroDcaMonthly = p.feroLoan/(p.feroDcaYears*12);
+
+  const yearly = {jano:[], jozo:[], fero:[], karpis:[]};
+  const snap = (m)=>{
+    if(m%12===0){
+      const yr = m/12;
+      const propVal = p.propertyPrice*Math.pow(1+p.reGrowth/100, yr);
+      yearly.jano.push(propVal - mortBal + janoLiquid);
+      yearly.jozo.push(jozoLiquid);
+      yearly.fero.push(feroLiquid);
+      yearly.karpis.push(karpisLiquid - marginLoan);
+    }
+  };
+  snap(0);
+
+  for(let m=0;m<months;m++){
+    const year = Math.floor(m/12);
+    const salary = p.salary0*Math.pow(1+p.wageGrowth/100, year);
+    const baseExp = p.baseExp0*Math.pow(1+p.inflation/100, year);
+    const rent = p.rent0*Math.pow(1+p.rentGrowth/100, year);
+    const propVal = p.propertyPrice*Math.pow(1+p.reGrowth/100, year+(m%12)/12);
+    const maint = propVal*(p.maintenancePct/100)/12;
+    const savingsCap = salary - baseExp;
+
+    const janoHouseCost = mortgagePmt + maint;
+    const janoSurplus = Math.max(savingsCap - janoHouseCost, 0);
+    janoLiquid = janoLiquid*(1+spxM) + janoSurplus;
+    if(mortBal>0){
+      const interest = mortBal*mortRM;
+      const princ = mortgagePmt - interest;
+      mortBal = Math.max(mortBal-princ,0);
+    }
+
+    const jozoSurplus = Math.max(savingsCap - rent, 0);
+    jozoLiquid = jozoLiquid*(1+spxM) + jozoSurplus;
+
+    const feroLoanActive = loanBal>0;
+    const feroLoanPmtNow = feroLoanActive ? feroLoanPmt : 0;
+    const feroSurplus = Math.max(savingsCap - rent - feroLoanPmtNow, 0);
+    const feroDca = m < p.feroDcaYears*12 ? feroDcaMonthly : 0;
+    feroLiquid = feroLiquid*(1+spxM) + feroSurplus + feroDca;
+    if(loanBal>0){
+      const li = loanBal*loanRM;
+      const lp = feroLoanPmt - li;
+      loanBal = Math.max(loanBal-lp,0);
+    }
+
+    const marginInterest = marginLoan*marginRM;
+    const karpisSurplus = Math.max(savingsCap - rent - marginInterest, 0);
+    karpisLiquid = karpisLiquid*(1+spxM) + karpisSurplus;
+
+    snap(m+1);
+  }
+
+  const propValFinal = p.propertyPrice*Math.pow(1+p.reGrowth/100, p.horizonYears);
+  const janoIlliquid = propValFinal - mortBal;
+  const inflFactor = Math.pow(1+p.inflation/100, p.horizonYears);
+
+  return {
+    yearly,
+    mortgagePmt, feroLoanPmt,
+    jano:{net:janoIlliquid+janoLiquid, illiquid:janoIlliquid, liquid:janoLiquid},
+    jozo:{net:jozoLiquid, illiquid:0, liquid:jozoLiquid},
+    fero:{net:feroLiquid, illiquid:0, liquid:feroLiquid},
+    karpis:{net:karpisLiquid-marginLoan, illiquid:0, liquid:karpisLiquid-marginLoan},
+    inflFactor,
+  };
+}
+
+function sensitivitySeries(p){
+  const spxRange = [];
+  for(let s=4; s<=13; s+=1) spxRange.push(s);
+  const jano=[], jozo=[], fero=[], karpis=[];
+  spxRange.forEach(s=>{
+    const p2 = {...p, spxReturn:s};
+    const r = simulate(p2);
+    jano.push(r.jano.net); jozo.push(r.jozo.net); fero.push(r.fero.net); karpis.push(r.karpis.net);
+  });
+  return {labels:spxRange.map(s=>s+'%'), jano, jozo, fero, karpis};
+}
+
+function findCrossoverSpx(p, targetLo=0, targetHi=20){
+  let lo=targetLo, hi=targetHi;
+  for(let i=0;i<40;i++){
+    const mid=(lo+hi)/2;
+    const r = simulate({...p, spxReturn:mid});
+    if(r.karpis.net > r.jano.net) hi=mid; else lo=mid;
+  }
+  return (lo+hi)/2;
+}
+function findCrossoverRe(p, targetLo=-2, targetHi=15){
+  let lo=targetLo, hi=targetHi;
+  for(let i=0;i<40;i++){
+    const mid=(lo+hi)/2;
+    const r = simulate({...p, reGrowth:mid});
+    if(r.jozo.net > r.jano.net) lo=mid; else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+
+const FIELD_KEYS = ['horizonYears','inflation','wageGrowth','salary0','baseExp0','propertyPrice','downPayment',
+  'mortgageRate','mortgageTerm','reGrowth','maintenancePct','buyingCostPct','rent0','rentGrowth','spxReturn',
+  'feroLoan','feroLoanRate','feroLoanTerm','feroDcaYears','marginRate'];
+
+function formatVal(key, val){
+  if(['inflation','wageGrowth','mortgageRate','reGrowth','maintenancePct','buyingCostPct','rentGrowth','spxReturn','feroLoanRate','marginRate'].includes(key)) return fmtPct(val);
+  if(['horizonYears','mortgageTerm','feroLoanTerm','feroDcaYears'].includes(key)) return val+' r.';
+  return fmtEUR(val);
+}
+
+function initControls(){
+  FIELD_KEYS.forEach(key=>{
+    const input = document.getElementById(key);
+    input.value = state[key];
+    document.getElementById('v_'+key).textContent = formatVal(key, state[key]);
+    input.addEventListener('input', ()=>{
+      state[key] = parseFloat(input.value);
+      document.getElementById('v_'+key).textContent = formatVal(key, state[key]);
+      clearPresetActive();
+      render();
+    });
+  });
+  document.getElementById('showKarpis').checked = state.showKarpis;
+  document.getElementById('showKarpis').addEventListener('change', (e)=>{
+    state.showKarpis = e.target.checked;
+    render();
+  });
+}
+
+function clearPresetActive(){
+  document.querySelectorAll('#presets button').forEach(b=>b.classList.remove('active'));
+}
+
+function buildPresetButtons(){
+  const wrap = document.getElementById('presets');
+  Object.entries(COUNTRY_PRESETS).forEach(([key,cfg])=>{
+    const btn = document.createElement('button');
+    btn.textContent = cfg.label;
+    btn.dataset.key = key;
+    btn.addEventListener('click', ()=>{
+      Object.assign(state, {
+        reGrowth:cfg.reGrowth, rentGrowth:cfg.rentGrowth, inflation:cfg.inflation,
+        wageGrowth:cfg.wageGrowth, mortgageRate:cfg.mortgageRate, marginRate:cfg.marginRate,
+      });
+      FIELD_KEYS.forEach(k=>{
+        const input = document.getElementById(k);
+        input.value = state[k];
+        document.getElementById('v_'+k).textContent = formatVal(k, state[k]);
+      });
+      clearPresetActive();
+      btn.classList.add('active');
+      document.getElementById('presetNote').textContent = cfg.note;
+      render();
+    });
+    wrap.appendChild(btn);
+  });
+  const note = document.createElement('div');
+  note.id='presetNote';
+  note.className='preset-note';
+  note.style.width='100%';
+  note.textContent = COUNTRY_PRESETS.sk.note;
+  document.getElementById('presets').after(note);
+  wrap.querySelector('button').classList.add('active');
+}
+
+let lineChart, sensChart;
+
+function render(){
+  const r = simulate(state);
+  document.getElementById('horizonLabel').textContent = state.horizonYears;
+  document.getElementById('horizonLabel2').textContent = state.horizonYears;
+
+  const cards = [
+    {key:'jano', name:'Jano', tag:'Kúpil byt na hypotéku, zvyšok investuje', color:'var(--jano)', data:r.jano},
+    {key:'jozo', name:'Jožo', tag:'Prenajíma, celý prebytok DCA do akcií', color:'var(--jozo)', data:r.jozo},
+    {key:'fero', name:'Fero', tag:'Prenajíma + spotrebný úver 7% do akcií', color:'var(--fero)', data:r.fero},
+  ];
+  if(state.showKarpis) cards.push({key:'karpis', name:'Karpišova páka', tag:'Páka 1:1 na akcie namiesto bytu', color:'var(--karpis)', data:r.karpis});
+
+  const statWrap = document.getElementById('statCards');
+  statWrap.innerHTML = '';
+  cards.forEach(c=>{
+    const liquidPct = c.data.net!==0 ? Math.max(0,c.data.liquid)/(Math.max(0,c.data.liquid)+Math.max(0,c.data.illiquid))*100 : 50;
+    const div = document.createElement('div');
+    div.className='stat-card';
+    div.style.setProperty('--c', c.color);
+    div.innerHTML = `
+      <h3>${c.name}</h3>
+      <div class="sub">${c.tag}</div>
+      <div class="big">${fmtEUR(c.data.net)}</div>
+      <div class="sub">reálne (dnešná kúpna sila): ${fmtEUR(c.data.net/r.inflFactor)}</div>
+      <div class="bar"><div class="liquid" style="width:${liquidPct}%"></div><div class="illiquid" style="width:${100-liquidPct}%"></div></div>
+      <div class="legend-mini"><span>◆ likvidné (akcie): ${fmtEUR(c.data.liquid)}</span><span>◆ nelikvidné (byt): ${fmtEUR(c.data.illiquid)}</span></div>
+    `;
+    statWrap.appendChild(div);
+  });
+
+  const years = Array.from({length:state.horizonYears+1}, (_,i)=>i);
+  const datasets = [
+    {label:'Jano (byt)', data:r.yearly.jano, borderColor:'#4f8cff', backgroundColor:'#4f8cff33', tension:.25},
+    {label:'Jožo (nájom+akcie)', data:r.yearly.jozo, borderColor:'#3ecf8e', backgroundColor:'#3ecf8e33', tension:.25},
+    {label:'Fero (úver+akcie)', data:r.yearly.fero, borderColor:'#ffb454', backgroundColor:'#ffb45433', tension:.25},
+  ];
+  if(state.showKarpis) datasets.push({label:'Karpišova páka 1:1', data:r.yearly.karpis, borderColor:'#c792ea', backgroundColor:'#c792ea33', tension:.25});
+
+  if(lineChart) lineChart.destroy();
+  lineChart = new Chart(document.getElementById('chartLine'), {
+    type:'line',
+    data:{labels:years, datasets},
+    options:{
+      responsive:true,
+      interaction:{mode:'index', intersect:false},
+      plugins:{legend:{labels:{color:'#cfd4dc'}}, tooltip:{callbacks:{label:(ctx)=> ctx.dataset.label+': '+fmtEUR(ctx.parsed.y)}}},
+      scales:{
+        x:{ticks:{color:'#9aa4b2'}, grid:{color:'#2a2f38'}, title:{display:true,text:'Rok',color:'#9aa4b2'}},
+        y:{ticks:{color:'#9aa4b2', callback:(v)=>(v/1000)+'k €'}, grid:{color:'#2a2f38'}},
+      }
+    }
+  });
+
+  const sens = sensitivitySeries(state);
+  const sensDatasets = [
+    {label:'Jano (byt)', data:sens.jano, borderColor:'#4f8cff', backgroundColor:'#4f8cff33', tension:.2},
+    {label:'Jožo (nájom+akcie)', data:sens.jozo, borderColor:'#3ecf8e', backgroundColor:'#3ecf8e33', tension:.2},
+    {label:'Fero (úver+akcie)', data:sens.fero, borderColor:'#ffb454', backgroundColor:'#ffb45433', tension:.2},
+  ];
+  if(state.showKarpis) sensDatasets.push({label:'Karpišova páka 1:1', data:sens.karpis, borderColor:'#c792ea', backgroundColor:'#c792ea33', tension:.2});
+  if(sensChart) sensChart.destroy();
+  sensChart = new Chart(document.getElementById('chartSensitivity'), {
+    type:'line',
+    data:{labels:sens.labels, datasets:sensDatasets},
+    options:{
+      responsive:true,
+      plugins:{legend:{labels:{color:'#cfd4dc'}}, tooltip:{callbacks:{label:(ctx)=> ctx.dataset.label+': '+fmtEUR(ctx.parsed.y)}}},
+      scales:{
+        x:{ticks:{color:'#9aa4b2'}, grid:{color:'#2a2f38'}, title:{display:true,text:'Očakávaný ročný výnos akcií',color:'#9aa4b2'}},
+        y:{ticks:{color:'#9aa4b2', callback:(v)=>(v/1000)+'k €'}, grid:{color:'#2a2f38'}},
+      }
+    }
+  });
+
+  const crossSpx = findCrossoverSpx(state);
+  const crossRe = findCrossoverRe(state);
+  const winner = r.jano.net >= (state.showKarpis ? Math.max(r.jozo.net, r.karpis.net) : r.jozo.net) ? 'Jano' :
+                 (state.showKarpis && r.karpis.net > r.jozo.net ? 'Karpišova páka' : 'Jožo');
+  document.getElementById('crossoverBox').innerHTML = `
+    <div class="line">📍 Pri aktuálnych nastaveniach po ${state.horizonYears} rokoch vedie <b>${winner}</b> s čistým majetkom ${fmtEUR(Math.max(r.jano.net, r.jozo.net, r.fero.net, state.showKarpis?r.karpis.net:0))}.</div>
+    <div class="line">⚖️ Karpišova páka 1:1 na akcie prekonáva Janov byt, ak je očakávaný ročný výnos akcií vyšší než približne <b>${crossSpx.toFixed(1)}%</b> (aktuálne nastavené na ${state.spxReturn}%; rast nehnuteľností je ${state.reGrowth}%).</div>
+    <div class="line">⚖️ Nepákovaný Jožo (bez úveru) dobehne Jana, ak rast cien nehnuteľností klesne pod približne <b>${crossRe.toFixed(1)}%</b> ročne (aktuálne ${state.reGrowth}%), pri výnose akcií ${state.spxReturn}%.</div>
+  `;
+}
+
+function buildPersonCards(){
+  const wrap = document.getElementById('personCards');
+  wrap.innerHTML = `
+  <div class="person-card" style="--c:var(--jano)">
+    <h3><span class="dot"></span>Jano — vlastný byt na hypotéku</h3>
+    <div class="tagline">80 % LTV hypotéka, zvyšok príjmu ide do akcií</div>
+    <div class="blocklabel benefit">Benefity</div>
+    <ul class="bullets">
+      <li>Vysoká páka (bežne 5×) pri historicky lacnom bankovom financovaní znásobí aj mierne zhodnotenie bytu na veľký výnos z vlastného kapitálu.</li>
+      <li>Kým hypotéku riadne spláca, banka sa nestará o pokles ceny bytu — na rozdiel od pákovaných akcií tu nehrozí margin call.</li>
+      <li>Nájomné (keby prenajímal) aj istota bývania sú mimo trhových výkyvov — psychologicky ľahšie sa "prečkáva" recesia.</li>
+      <li>Čiastočná ochrana pred infláciou — nominálna splátka je fixná, dlh sa reálne postupne "rozpúšťa".</li>
+    </ul>
+    <div class="blocklabel risk">Riziká</div>
+    <ul class="bullets">
+      <li>Nízka diverzifikácia — väčšina majetku viazaná v jednej nehnuteľnosti na jednej ulici v jednom meste.</li>
+      <li>Refixačné riziko: model počíta fixnú sadzbu na celých 30 rokov, v realite sa na Slovensku fixuje na 3–10 rokov (viď skok z 1,3 % v 2019 na vyše 4 % v 2023).</li>
+      <li>Nízka likvidita, predaj trvá mesiace a stojí 3–6 % transakčných nákladov.</li>
+      <li>Demografia: najsilnejšie populačné ročníky už kúpili, dopyt do budúcna môže byť slabší (Karpišov argument).</li>
+      <li>Dnešné ceny bytov voči nájmu (price-rent ratio) sú vysoké — čisté výnosové percento pod odporúčaných 4,5 % sa hľadá ťažko.</li>
+    </ul>
+    <div class="path"><b>Najlepšia cesta pre Jana</b>Kupuj len ak vieš zdôvodniť cenu (nie „lebo všetci kupujú") a máš 3–6 mesačnú rezervu mimo bytu. Fixuj sadzbu čo najdlhšie, priebežne investuj prebytok do diverzifikovaných akcií namiesto ďalšej nehnuteľnosti — tak nekoncentruješ celý majetok do jedného aktíva.</div>
+  </div>
+
+  <div class="person-card" style="--c:var(--jozo)">
+    <h3><span class="dot"></span>Jožo — prenájom + pravidelné investovanie</h3>
+    <div class="tagline">Bez páky, bez dlhu, celý prebytok do S&P 500</div>
+    <div class="blocklabel benefit">Benefity</div>
+    <ul class="bullets">
+      <li>Najvyššia flexibilita a najnižšie riziko zo všetkých — žiadny dlh, žiadny margin call, žiadna viazanosť na konkrétne mesto.</li>
+      <li>Globálne diverzifikované portfólio namiesto koncentrácie do jedného bytu.</li>
+      <li>Môže sa kedykoľvek presťahovať za prácou alebo vzťahom bez nákladov na predaj nehnuteľnosti.</li>
+    </ul>
+    <div class="blocklabel risk">Riziká</div>
+    <ul class="bullets">
+      <li>Žiadna páka — pri silnom raste cien nehnuteľností (ako posledných 20 rokov na Slovensku) najviac zaostáva za Janom.</li>
+      <li>Nájomné riziko: závislosť od prenajímateľa, možné zvyšovanie nájmu alebo výpoveď.</li>
+      <li>Bez "nútenej" disciplíny splácania hypotéky si vyžaduje vysokú vlastnú disciplínu investovať pravidelne 20 rokov bez prerušenia.</li>
+    </ul>
+    <div class="path"><b>Najlepšia cesta pre Joža</b>Automatizuj mesačný nákup akcií (trvalý príkaz), aby disciplína nezávisela od nálady. Až keď má slušne veľké portfólio, môže zvážiť malú, dobre riadenú maržovú pozíciu (Karpišov nápad) namiesto ďalšej nehnuteľnosti — nikdy nie viac, než unesie pri poklese 40 %.</div>
+  </div>
+
+  <div class="person-card" style="--c:var(--fero)">
+    <h3><span class="dot"></span>Fero — spotrebný úver do akcií</h3>
+    <div class="tagline">50-tisíc € na 7 %, DCA do S&P 500 počas 5 rokov</div>
+    <div class="blocklabel benefit">Benefity</div>
+    <ul class="bullets">
+      <li>Skorý vstup väčšej sumy do akcií znamená viac rokov zloženého úročenia na tejto časti portfólia.</li>
+      <li>Ostáva likvidný a nie je viazaný na jednu nehnuteľnosť.</li>
+    </ul>
+    <div class="blocklabel risk">Riziká</div>
+    <ul class="bullets">
+      <li>Úver na 7 % je drahší než hypotéka a v modeli takmer vynuluje mesačný investičný prebytok na celú dobu splácania — tzv. "crowding-out" efekt.</li>
+      <li>V základnom scenári preto Fero skončí <b>horšie</b> než nepákovaný Jožo, hoci mal viac akcií skôr — páka sa mu za týchto podmienok nevyplatila.</li>
+      <li>Spotrebný úver je bez zabezpečenia portfóliom, sadzba je fixná a vysoká bez ohľadu na to, ako sa darí trhom.</li>
+      <li>Toto nie je to, čo Karpiš v rozhovore odporúčal — on hovoril o lombardnom/maržovom úvere naviazanom na portfólio za nižšiu sadzbu, nie o drahšom spotrebnom úvere.</li>
+    </ul>
+    <div class="path"><b>Najlepšia cesta pre Fera</b>Nepoužívaj spotrebný úver na investovanie — je drahý a nepružný. Ak chceš efekt páky, ktorý opisoval Karpiš, rob to cez maržový/lombardný úver u brokera až vtedy, keď už máš vlastné portfólio ako zábezpeku, a drž pákový pomer nízko (napr. 1:0,3–1:0,5, nie 1:1).</div>
+  </div>
+
+  <div class="person-card" style="--c:var(--karpis)">
+    <h3><span class="dot"></span>Bonus: Karpišova páka 1:1</h3>
+    <div class="tagline">Rovnaká vlastná investícia ako Janova akontácia, ale 1:1 pákovaná do akcií namiesto bytu</div>
+    <div class="blocklabel benefit">Benefity</div>
+    <ul class="bullets">
+      <li>Priamo testuje Karpišovo tvrdenie z podcastu — rovnaká páka ako pri hypotéke, len na akciách.</li>
+      <li>Pri výnose akcií nad ~9 % ročne (blízko historického priemeru S&P 500) tento model túto stratégiu ukazuje mierne <b>pred</b> Janom — čo presne zodpovedá tomu, čo Karpiš v rozhovore tvrdil.</li>
+      <li>Vyššia likvidita portfólia — časť sa dá predať čiastočne, na rozdiel od bytu.</li>
+    </ul>
+    <div class="blocklabel risk">Riziká</div>
+    <ul class="bullets">
+      <li>Margin call je tu reálny: ak hodnota portfólia klesne pod threshold, broker môže nedobrovoľne predať pozície presne v najhoršom čase — na rozdiel od hypotéky, ktorá "nezavolá", kým platíš.</li>
+      <li>Výsledok je citlivý na presný predpoklad výnosu akcií — pod ~8 % ročne prehráva s Janom (pozri graf citlivosti vyššie).</li>
+      <li>Vyžaduje prístup k lombardnému úveru za rozumnú sadzbu, čo bežný Slovák s bankovým účtom nemá tak automaticky ako hypotéku.</li>
+      <li>Psychologicky oveľa náročnejšie sledovať pákované akcie pri poklese o 30–40 % než platiť nemennú hypotekárnu splátku.</li>
+    </ul>
+    <div class="path"><b>Najlepšia cesta</b>Realisticky dostupné len pre skúsenejších investorov s existujúcim portfóliom a nervami na margin volatilitu. Pre väčšinu ľudí je bezpečnejšie zostať pri Jožovej ceste bez páky, alebo si vziať páku vo forme hypotéky na skutočnú nehnuteľnosť, kde margin call nehrozí.</div>
+  </div>
+  `;
+}
+
+buildPresetButtons();
+buildPersonCards();
+initControls();
+render();
+</script>
+</body>
+</html>
