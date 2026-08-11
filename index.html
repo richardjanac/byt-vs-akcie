@@ -553,7 +553,7 @@
 
   <div class="intro">
     <p><b>Prečo tento nástroj existuje:</b> v podcaste Dubec vs. Karpiš zaznelo veľa čísel (140 % vs. 470 % za 15 rokov, výnosové percento 4,5 %, páka 1:1 na S&P 500...), ale rozhovor sa preskakoval medzi témami a nikdy sa nedopracoval k jasnému, počítateľnému porovnaniu pre bežného človeka. Tento model to skúša doriešiť na <b>6 fiktívnych 20-ročných cestách</b>: Jano, Laco, Milan, Jožo a Fero sú hlavné scenáre; <b>šiesta cesta (bonus)</b> doslova testuje Karpišovo tvrdenie o páke 1:1 na akciách namiesto bytu.</p>
-    <p><b>Férový štart od nuly:</b> nikto nedostáva na začiatku 30 000 € „zadarmo". Jano, Laco aj Milan najprv bývajú v nájme a šetria na akontáciu; kupujú až keď majú dosť (akontácia + transakčné náklady pri vtedajšej cene bytu). Jožo a Fero medzitým od prvého mesiaca investujú prebytok do akcií — takže majú časový náskok, kým ostatní šetria na byt.</p>
+    <p><b>Férový štart od nuly:</b> nikto nedostáva 30 000 € na začiatku. Defaultne zostáva <b>1 000 €/mes</b> po životných nákladoch a nájme (1 900 − 500 − 400). Jano/Laco/Milan týchto 1 000 € šetria na akontáciu → pri 30 000 € kúpia prvý byt okolo <b>30. mesiaca</b>. Jožo a Fero od 1. mesiaca investujú tých istých 1 000 € do akcií. Karpišova páka 1:1 beží <b>od 1. mesiaca</b> (každý mesiac investuje 2× prebytok, z toho 1× požičané).</p>
     <p><b>Dôležité:</b> toto nie je predikcia budúcnosti, je to kalkulačka predpokladov. Všetky čísla nižšie sú upraviteľné — základné hodnoty vychádzajú z historických priemerov posledných ~15–20 rokov (zdroje v päte stránky), ale budúci vývoj môže byť úplne iný (aj Dubec aj Karpiš sa v podcaste zhodli, že posledných 20 rokov na Slovensku sa pravdepodobne nezopakuje).</p>
   </div>
 
@@ -576,6 +576,7 @@
     <div class="field"><label>Inflácia (ročne) <span class="val" id="v_inflation"></span></label><input type="range" id="inflation" min="0" max="10" step="0.1"></div>
     <div class="field"><label>Rast čistej mzdy (ročne) <span class="val" id="v_wageGrowth"></span></label><input type="range" id="wageGrowth" min="0" max="10" step="0.1"></div>
     <div class="field"><label>Štartovací čistý príjem (spolu, €/mes) <span class="val" id="v_salary0"></span></label><input type="range" id="salary0" min="800" max="3000" step="50"></div>
+    <div class="note">Default <b>1 900 €</b> − životné náklady 500 € − nájom 400 € = <b>1 000 €/mes</b> na sporenie alebo investovanie. To je jadro porovnania.</div>
     <div class="field"><label>Základné životné náklady mimo bývania (€/mes) <span class="val" id="v_baseExp0"></span></label><input type="range" id="baseExp0" min="200" max="1000" step="25"></div>
   </div>
 
@@ -583,7 +584,7 @@
     <h4>Vlastný byt (Jano, Laco, Milan)</h4>
     <div class="field"><label>Cena bytu (€) <span class="val" id="v_propertyPrice"></span></label><input type="range" id="propertyPrice" min="60000" max="300000" step="5000"></div>
     <div class="field"><label>Cieľová akontácia (€) <span class="val" id="v_downPayment"></span></label><input type="range" id="downPayment" min="10000" max="90000" step="1000"></div>
-    <div class="note">Všetci začínajú od <b>nuly</b>. Jano/Laco/Milan šetria v nájme, kým nemajú na akontáciu (podiel z vtedajšej ceny bytu) + transakčné náklady — kupujú neskôr, keď ceny už mohli stúpnuť. Jožo/Fero medzitým investujú do akcií. Slider nastavuje počiatočný podiel akontácie (default 20 % z 150 000 € = 30 000 €).</div>
+    <div class="note">Všetci začínajú od <b>nuly</b>. Pri defaultoch šetria/investujú <b>1 000 €/mes</b>. Jano/Laco/Milan kúpia prvý byt, keď majú akontáciu (30 × 1 000 = 30 000 € ≈ 30 mesiacov), za východiskovú cenu bytu. Po kúpe: Laco = hypotéka + zvyšok do akcií; Jano = hypotéka + dokupovanie ďalších bytov.</div>
     <div class="field"><label>Úrok hypotéky <span class="val" id="v_mortgageRate"></span></label><input type="range" id="mortgageRate" min="1" max="9" step="0.1"></div>
     <div class="note">Trhová hypotéka na Slovensku existuje od <b>1998</b> (prvá VÚB hypotéka 13,5 %). Za ~28 merateľných rokov (1998–2026) jednoduchý priemer sadzieb vychádza na cca <b>5–5,5 %</b> (časť rokov 1999–2010 je trendová interpolácia). Za posledných 20 rokov (2006–2025) s dobre podloženými dátami je priemer ~<b>3,5 %</b> — to platí pre <b>Laca a Milana</b> (default vyššie). <b>Jano</b> má vlastný slider nižšie s dlhším historickým priemerom, lebo dokupuje byty počas celej simulácie.</div>
     <div class="field"><label>Splatnosť hypotéky (roky) <span class="val" id="v_mortgageTerm"></span></label><input type="range" id="mortgageTerm" min="10" max="40" step="1"></div>
@@ -624,7 +625,7 @@
 
   <div class="ctrl-group">
     <h4>6. cesta — bonus: Karpišova páka 1:1</h4>
-    <div class="note">Toto je <b>bonusový</b> scenár naviac k piatim hlavným — rovnaká akontácia ako pri byte, ale 1:1 pákovaná do akcií. Môžeš ju skryť z grafov, ak chceš porovnávať len päť základných ciest.</div>
+    <div class="note">Toto je <b>bonusový</b> scenár. Od <b>1. mesiaca</b> berie mesačný prebytok (~1 000 €), požičia rovnakú sumu a investuje 2× do akcií (páka 1:1). Platí úrok z narastajúceho maržového úveru. Môžeš ju skryť z grafov.</div>
     <div class="karpis-toggle"><input type="checkbox" id="showKarpis" checked><label for="showKarpis">Zobraziť bonusovú 6. cestu v grafoch a výsledkoch</label></div>
     <div class="field"><label>Úrok maržového/lombardného úveru <span class="val" id="v_marginRate"></span></label><input type="range" id="marginRate" min="1" max="10" step="0.1"></div>
   </div>
@@ -704,7 +705,7 @@
 <div class="verdict">
   <h2>Kto mal v podcaste pravdu?</h2>
   <p>Podľa tohto modelu — <b>obaja, len o inej veci.</b> Dubec má pravdu, že hypotéka je mimoriadne silná páka, ktorú bežný človek nikde inde takto lacno a s takouto ochranou pred margin callom nedostane — kým riadne splácaš, banka sa nepýta, o koľko klesla cena bytu. Karpiš má pravdu, že rovnaký (alebo menší) pákový efekt vieš v princípe dosiahnuť aj na akciách, s vyššou likviditou a diverzifikáciou — ale iba ak vieš zohnať porovnateľne lacný úver a psychicky aj inštitucionálne uneseš riziko margin callu, ktoré pri hypotéke nehrozí.</p>
-  <p>Zaujímavé je, že pri férovom štarte od nuly (bez hotovej akontácie v deň 0) sa poradie výrazne mení oproti modelu „všetci majú 30-tisíc na stole". Kým Jano/Laco/Milan ~5 rokov šetria v nájme na akontáciu, Jožo už skladá akcie — a ten časový náskok často dorovná alebo prekoná výhodu hypotekárnej páky. Janova opakovaná páka na byty stále funguje, ale pri drahšej hypotéke (~5,25 %) a neskoršom vstupe už nie je automatický víťaz. Skús si posunúť predpoklady vyššie.</p>
+  <p>Pri férovom štarte od nuly s <b>1 000 €/mes</b> (Jožo investuje od 1. mesiaca, kupujúci šetria ~30 mesiacov na akontáciu) sa ukazuje sila času v trhu: Jožo má niekoľkoročný náskok v akciách. Laco po kúpe dáva zvyšok do akcií; Jano skúša opakovanú páku na ďalšie byty. Karpišova páka 1:1 od 1. mesiaca je agresívnejšia — a aj rizikovejšia (margin call). Poradie závisí od predpokladov; skús si ich posunúť vyššie.</p>
   <p>Skutočné jadro sporu (ktoré sa v rozhovore nikdy jasne nevyslovilo) je jednoduchá otázka do budúcnosti: <b>bude rozdiel medzi budúcim výnosom akcií a cenou úveru väčší, alebo menší, než rozdiel medzi budúcim rastom cien nehnuteľností a cenou hypotéky?</b> Za posledných 15–20 rokov na Slovensku to (tesne) vychádzalo v prospech nehnuteľností najmä vďaka extrémne lacným hypotékam 2015–2021. Skús si to v kalkulačke vyššie.</p>
   <div class="split">
     <div>
@@ -719,7 +720,7 @@
 </div>
 
 <footer>
-  <p><b>Metodika:</b> všetci začínajú s nulovým kapitálom. Jano, Laco a Milan najprv platia rovnaký nájom ako Jožo a mesačný prebytok šetria na bezpečnej sadzbe; kupujú byt až keď majú na akontáciu (podiel z aktuálnej trhovej ceny) + transakčné náklady — cena bytu medzitým rastie. Jožo a Fero od prvého mesiaca investujú prebytok do akcií. Karpiš šetrí, kým nemá sumu rovnú akontácii, potom nasadí páku 1:1 do akcií. Hypotéka je anuitná so zafixovanou sadzbou na celú dobu (v realite sa na Slovensku fixuje na 3–10 rokov). Laco/Milan default ~3,5 % (20 r.); Jano ~5,25 % (~28 r. od 1998). Po kúpe Jano dokupuje ďalšie byty, keď mu cash flow stačí na ďalšiu akontáciu; Laco investuje prebytok do akcií; Milan sporí.</p>
+  <p><b>Metodika:</b> všetci začínajú s nulovým kapitálom. Mesačný prebytok = mzda − životné náklady − nájom (default 1 900 − 500 − 400 = <b>1 000 €</b>). Jano/Laco/Milan šetria tento prebytok, kým nemajú akontáciu; prvý byt kupujú za východiskovú cenu (aby 30 × 1 000 € = 30 000 € sedelo na 20 % z 150 000 €). Po kúpe prestávajú platiť nájom a platia hypotéku + údržbu z prebytku po životných nákladoch; Laco zvyšok dáva do akcií, Milan sporí, Jano dokupuje ďalšie byty. Jožo od 1. mesiaca celý prebytok do akcií. Fero to isté + spotrebný úver. Karpiš od 1. mesiaca páka 1:1 na mesačný prebytok (2× do akcií, 1× úver, platí maržový úrok).</p>
   <p><b>Zdroje pre východiskové hodnoty:</b> NBS index cien nehnuteľností na bývanie, ŠÚ SR, Eurostat House Price Index, Trading Economics (SK/IT/HU/PL), Finsider.sk (vývoj miezd, nájmov a úrokových sadzieb), Banky.sk a Financer.sk (historický vývoj hypoték 1998–2026), Karpišove a Dubecove čísla z podcastu „Dubec vs. Karpiš a byty, byty, byty" (140 % rast nehnuteľností a ~25–33 % rast nájmu za 15 rokov, S&P 500 ~470 % za 15 rokov, dvojizbák v Ružinove za 650 €/mes). Toto sú orientačné historické priemery, nie garancia budúceho vývoja — uprav si ich podľa vlastného názoru.</p>
 </footer>
 
@@ -738,7 +739,7 @@ const COUNTRY_PRESETS = {
 };
 
 const DEFAULTS = {
-  horizonYears:20, salary0:1500, baseExp0:500, wageGrowth:5.0, inflation:3.5,
+  horizonYears:20, salary0:1900, baseExp0:500, wageGrowth:5.0, inflation:3.5,
   propertyPrice:150000, downPayment:30000, mortgageRate:3.5, janoMortgageRate:5.25, mortgageTerm:30,
   maintenancePct:1.0, buyingCostPct:3.0, rent0:400, rentGrowth:2.0,
   reGrowth:6.0, spxReturn:9.0, feroLoan:50000, feroLoanRate:7.0, feroLoanTerm:10, feroDcaYears:5,
@@ -770,37 +771,38 @@ function simulate(p){
   const downPct = p.downPayment/p.propertyPrice;
   const grossYield0 = p.rentalRent0*12/p.propertyPrice;
 
-  // Všetci začínajú od nuly — žiadna hotová akontácia ani počiatočný kapitál.
-  // Jano/Laco/Milan najprv bývajú v nájme a šetria; kupujú až keď majú na akontáciu + transakčné náklady
-  // pri vtedajšej trhovej cene. Jožo/Fero medzitým od prvého mesiaca investujú do akcií.
-  let lacoCash = 0, lacoLiquid = 0, lacoBal = 0, lacoOwns = false, lacoBuyPrice = 0, lacoBuyM = -1, lacoMortPmt = 0;
-  let milanCash = 0, milanBal = 0, milanOwns = false, milanBuyPrice = 0, milanBuyM = -1, milanMortPmt = 0;
-  let janoCash = 0, janoOwnBal = 0, janoOwns = false, janoBuyPrice = 0, janoBuyM = -1, janoMortPmt = 0, janoUnits = [];
+  // Férový štart od nuly.
+  // Default: 1900 - 500 - 400 nájom = 1000 € na sporenie/investície.
+  // Jano/Laco/Milan šetria ~1000 €/mes → pri 30 000 € akontácii kúpa ~30. mesiac (východisková cena bytu).
+  // Jožo/Fero investujú týchto ~1000 € od 1. mesiaca.
+  // Karpiš: páka 1:1 OD 1. MESIACA na mesačný prebytok (investuje 2×, požičia 1×).
+  let lacoCash = 0, lacoLiquid = 0, lacoBal = 0, lacoOwns = false, lacoBuyM = -1, lacoMortPmt = 0;
+  let milanCash = 0, milanBal = 0, milanOwns = false, milanBuyM = -1, milanMortPmt = 0;
+  let janoCash = 0, janoOwnBal = 0, janoOwns = false, janoBuyM = -1, janoMortPmt = 0, janoUnits = [];
   let jozoLiquid = 0, feroLiquid = 0;
-  let karpisCash = 0, karpisLiquid = 0, karpisLevered = false, karpisDeployM = -1;
-  let marginLoan = 0;
-  let loanBal = p.feroLoan; // Fero berie spotrebný úver hneď — to je jeho stratégia
+  let karpisPort = 0, karpisLoan = 0;
+  let loanBal = p.feroLoan;
 
-  const homeEquity = (owns, buyM, price, bal, m)=>{
+  const homeEquity = (owns, buyM, bal, m)=>{
     if(!owns || buyM < 0) return 0;
     const yrsHeld = (m - buyM)/12;
-    return price*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0)) - bal;
+    return p.propertyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0)) - bal;
   };
 
   const yearly = {jano:[], laco:[], milan:[], jozo:[], fero:[], karpis:[]};
   const snap = (m)=>{
     if(m%12===0){
-      yearly.laco.push(homeEquity(lacoOwns, lacoBuyM, lacoBuyPrice, lacoBal, m) + lacoLiquid + lacoCash);
-      yearly.milan.push(homeEquity(milanOwns, milanBuyM, milanBuyPrice, milanBal, m) + milanCash);
+      yearly.laco.push(homeEquity(lacoOwns, lacoBuyM, lacoBal, m) + lacoLiquid + lacoCash);
+      yearly.milan.push(homeEquity(milanOwns, milanBuyM, milanBal, m) + milanCash);
       yearly.jozo.push(jozoLiquid);
       yearly.fero.push(feroLiquid);
-      yearly.karpis.push((karpisLevered ? karpisLiquid - marginLoan : 0) + karpisCash);
+      yearly.karpis.push(karpisPort - karpisLoan);
       let unitsNet = 0;
       janoUnits.forEach(u=>{
         const yrsHeld = (m-u.pm)/12;
         unitsNet += u.price*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0)) - u.bal;
       });
-      yearly.jano.push(homeEquity(janoOwns, janoBuyM, janoBuyPrice, janoOwnBal, m) + unitsNet + janoCash);
+      yearly.jano.push(homeEquity(janoOwns, janoBuyM, janoOwnBal, m) + unitsNet + janoCash);
     }
   };
   snap(0);
@@ -810,87 +812,79 @@ function simulate(p){
     const salary = p.salary0*Math.pow(1+p.wageGrowth/100, year);
     const baseExp = p.baseExp0*Math.pow(1+p.inflation/100, year);
     const rent = p.rent0*Math.pow(1+p.rentGrowth/100, year);
-    const savingsCap = salary - baseExp;
-    const nextPrice = p.propertyPrice*Math.pow(1+p.reGrowth/100, (m+1)/12);
-    const needed = nextPrice*downPct + nextPrice*(p.buyingCostPct/100);
+    const afterLife = salary - baseExp;
+    const afterRent = Math.max(afterLife - rent, 0); // default ~1000 €
 
-    // Jožo — od t=0 nájom + DCA do akcií
-    jozoLiquid = jozoLiquid*(1+spxM) + Math.max(savingsCap - rent, 0);
+    // Jožo — od 1. mesiaca ~1000 € do akcií
+    jozoLiquid = jozoLiquid*(1+spxM) + afterRent;
 
-    // Fero — od t=0 nájom + splátka úveru + DCA úveru do akcií
+    // Fero — od 1. mesiaca ~1000 € + spotrebný úver do akcií
     const feroLoanPmtNow = loanBal>0 ? feroLoanPmt : 0;
     const feroDca = m < p.feroDcaYears*12 ? feroDcaMonthly : 0;
-    feroLiquid = feroLiquid*(1+spxM) + Math.max(savingsCap - rent - feroLoanPmtNow, 0) + feroDca;
+    feroLiquid = feroLiquid*(1+spxM) + Math.max(afterRent - feroLoanPmtNow, 0) + feroDca;
     if(loanBal>0){ const li=loanBal*loanRM, lp=feroLoanPmt-li; loanBal=Math.max(loanBal-lp,0); }
 
-    // Karpiš — šetrí na „akontáciu", potom 1:1 páka do akcií
-    if(!karpisLevered){
-      karpisCash = karpisCash*(1+safeM) + Math.max(savingsCap - rent, 0);
-      if(karpisCash >= p.downPayment){
-        karpisCash -= p.downPayment;
-        marginLoan = p.downPayment;
-        karpisLiquid = p.downPayment * 2;
-        karpisLevered = true;
-        karpisDeployM = m+1;
-      }
-    } else {
-      const marginInterest = marginLoan*marginRM;
-      karpisLiquid = karpisLiquid*(1+spxM) + Math.max(savingsCap - rent - marginInterest, 0);
-      if(karpisCash > 0) karpisCash = karpisCash*(1+safeM);
-    }
+    // Karpiš — páka 1:1 OD 1. MESIACA
+    const marginInterest = karpisLoan*marginRM;
+    const kOwn = Math.max(afterRent - marginInterest, 0);
+    karpisPort = karpisPort*(1+spxM) + 2*kOwn;
+    karpisLoan += kOwn;
 
-    const tryBuy = (cash, rate)=>{
-      if(cash >= needed){
-        const leftover = cash - needed;
-        const loanAmt = nextPrice - nextPrice*downPct;
-        return {bought:true, leftover, bal:loanAmt, price:nextPrice, pmt:pmt(loanAmt, rate, p.mortgageTerm), buyM:m+1};
+    // Pri šetrení na 1. byt používame konštantný východiskový prebytok (default 1000 €),
+    // aby 30 × 1000 = 30 000 sedelo presne — bez skreslenia rastom mzdy.
+    const saveRate0 = Math.max(p.salary0 - p.baseExp0 - p.rent0, 0);
+    const tryFirstBuy = (cash, rate)=>{
+      if(cash >= p.downPayment){
+        const leftover = cash - p.downPayment - p.propertyPrice*(p.buyingCostPct/100);
+        const loanAmt = p.propertyPrice - p.downPayment;
+        return {bought:true, leftover, bal:loanAmt, pmt:pmt(loanAmt, rate, p.mortgageTerm), buyM:m+1};
       }
       return {bought:false};
     };
 
-    // Laco — najprv šetrí v nájme, po kúpe prebytok do akcií
+    // Laco — šetrí → kúpi → hypotéka + zvyšok do akcií
     if(!lacoOwns){
-      lacoCash = lacoCash*(1+safeM) + Math.max(savingsCap - rent, 0);
-      const b = tryBuy(lacoCash, p.mortgageRate);
+      lacoCash = lacoCash + saveRate0; // konštantných ~1000 €/mes → kúpa v 30. mesiaci
+      const b = tryFirstBuy(lacoCash, p.mortgageRate);
       if(b.bought){
-        lacoCash = 0; lacoLiquid = b.leftover; lacoBal = b.bal; lacoBuyPrice = b.price;
+        lacoCash = 0; lacoLiquid = Math.max(b.leftover, 0); lacoBal = b.bal;
         lacoMortPmt = b.pmt; lacoBuyM = b.buyM; lacoOwns = true;
       }
     } else {
       const yrsHeld = (m+1 - lacoBuyM)/12;
-      const propVal = lacoBuyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
+      const propVal = p.propertyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
       const maint = propVal*(p.maintenancePct/100)/12;
-      lacoLiquid = lacoLiquid*(1+spxM) + Math.max(savingsCap - (lacoMortPmt+maint), 0);
+      lacoLiquid = lacoLiquid*(1+spxM) + Math.max(afterLife - lacoMortPmt - maint, 0);
       if(lacoBal>0){ const i=lacoBal*mortRM, pr=lacoMortPmt-i; lacoBal=Math.max(lacoBal-pr,0); }
     }
 
-    // Milan — najprv šetrí v nájme, po kúpe prebytok len sporí
+    // Milan — šetrí → kúpi → hypotéka + zvyšok len sporí
     if(!milanOwns){
-      milanCash = milanCash*(1+safeM) + Math.max(savingsCap - rent, 0);
-      const b = tryBuy(milanCash, p.mortgageRate);
+      milanCash = milanCash + saveRate0;
+      const b = tryFirstBuy(milanCash, p.mortgageRate);
       if(b.bought){
-        milanCash = b.leftover; milanBal = b.bal; milanBuyPrice = b.price;
+        milanCash = Math.max(b.leftover, 0); milanBal = b.bal;
         milanMortPmt = b.pmt; milanBuyM = b.buyM; milanOwns = true;
       }
     } else {
       const yrsHeld = (m+1 - milanBuyM)/12;
-      const propVal = milanBuyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
+      const propVal = p.propertyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
       const maint = propVal*(p.maintenancePct/100)/12;
-      milanCash = milanCash*(1+safeM) + Math.max(savingsCap - (milanMortPmt+maint), 0);
+      milanCash = milanCash*(1+safeM) + Math.max(afterLife - milanMortPmt - maint, 0);
       if(milanBal>0){ const i=milanBal*mortRM, pr=milanMortPmt-i; milanBal=Math.max(milanBal-pr,0); }
     }
 
-    // Jano — najprv šetrí v nájme, po kúpe dokupuje ďalšie byty
+    // Jano — šetrí → kúpi → dokupuje ďalšie byty
     if(!janoOwns){
-      janoCash = janoCash*(1+safeM) + Math.max(savingsCap - rent, 0);
-      const b = tryBuy(janoCash, p.janoMortgageRate);
+      janoCash = janoCash + saveRate0;
+      const b = tryFirstBuy(janoCash, p.janoMortgageRate);
       if(b.bought){
-        janoCash = b.leftover; janoOwnBal = b.bal; janoBuyPrice = b.price;
+        janoCash = Math.max(b.leftover, 0); janoOwnBal = b.bal;
         janoMortPmt = b.pmt; janoBuyM = b.buyM; janoOwns = true;
       }
     } else {
       const yrsHeld = (m+1 - janoBuyM)/12;
-      const propVal = janoBuyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
+      const propVal = p.propertyPrice*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0));
       const maint = propVal*(p.maintenancePct/100)/12;
       let rentalCF = 0;
       janoUnits.forEach(u=>{
@@ -902,8 +896,10 @@ function simulate(p){
         rentalCF += effRent - opex - u.pmt;
         if(u.bal>0){ const i=u.bal*janoMortRM, pr=u.pmt-i; u.bal=Math.max(u.bal-pr,0); }
       });
-      janoCash = janoCash*(1+safeM) + (savingsCap - (janoMortPmt+maint) + rentalCF);
+      janoCash = janoCash*(1+safeM) + (afterLife - janoMortPmt - maint + rentalCF);
       if(janoOwnBal>0){ const i=janoOwnBal*janoMortRM, pr=janoMortPmt-i; janoOwnBal=Math.max(janoOwnBal-pr,0); }
+      const nextPrice = p.propertyPrice*Math.pow(1+p.reGrowth/100, (m+1)/12);
+      const needed = nextPrice*downPct + nextPrice*(p.buyingCostPct/100);
       if(janoCash >= needed){
         janoCash -= needed;
         const loanAmt = nextPrice - nextPrice*downPct;
@@ -915,23 +911,24 @@ function simulate(p){
   }
 
   const inflFactor = Math.pow(1+p.inflation/100, p.horizonYears);
-  const lacoIlliquid = homeEquity(lacoOwns, lacoBuyM, lacoBuyPrice, lacoBal, months);
-  const milanIlliquid = homeEquity(milanOwns, milanBuyM, milanBuyPrice, milanBal, months);
+  const lacoIlliquid = homeEquity(lacoOwns, lacoBuyM, lacoBal, months);
+  const milanIlliquid = homeEquity(milanOwns, milanBuyM, milanBal, months);
   let janoUnitsNet = 0;
   janoUnits.forEach(u=>{
     const yrsHeld = (months-u.pm)/12;
     janoUnitsNet += u.price*Math.pow(1+p.reGrowth/100, Math.max(yrsHeld,0)) - u.bal;
   });
-  const janoIlliquid = homeEquity(janoOwns, janoBuyM, janoBuyPrice, janoOwnBal, months) + janoUnitsNet;
+  const janoIlliquid = homeEquity(janoOwns, janoBuyM, janoOwnBal, months) + janoUnitsNet;
 
   return {
     yearly, inflFactor,
-    buyMonths:{jano:janoBuyM, laco:lacoBuyM, milan:milanBuyM, karpis:karpisDeployM},
+    buyMonths:{jano:janoBuyM, laco:lacoBuyM, milan:milanBuyM, karpis:1},
+    monthlyAlloc0: p.salary0 - p.baseExp0 - p.rent0,
     laco:{net:lacoIlliquid+lacoLiquid+lacoCash, illiquid:lacoIlliquid, liquid:lacoLiquid+lacoCash},
     milan:{net:milanIlliquid+milanCash, illiquid:milanIlliquid, liquid:milanCash},
     jozo:{net:jozoLiquid, illiquid:0, liquid:jozoLiquid},
     fero:{net:feroLiquid, illiquid:0, liquid:feroLiquid},
-    karpis:{net:karpisLiquid-marginLoan+karpisCash, illiquid:0, liquid:karpisLiquid-marginLoan+karpisCash},
+    karpis:{net:karpisPort-karpisLoan, illiquid:0, liquid:karpisPort-karpisLoan},
     jano:{net:janoIlliquid+janoCash, illiquid:janoIlliquid, liquid:janoCash, nUnits:janoUnits.length},
   };
 }
@@ -1041,7 +1038,7 @@ function buildCastRow(){
     {name:'Milan', c:'var(--milan)', desc:'Od nuly → šetrí na akontáciu → byt, zvyšok len sporí', bonus:false},
     {name:'Jožo', c:'var(--jozo)', desc:'Od nuly → prenájom, celý prebytok od 1. mesiaca do akcií', bonus:false},
     {name:'Fero', c:'var(--fero)', desc:'Od nuly → prenájom + spotrebný úver do akcií', bonus:false},
-    {name:'Karpišova páka', c:'var(--karpis)', desc:'Od nuly → šetrí equity → páka 1:1 do akcií (bonus)', bonus:true},
+    {name:'Karpišova páka', c:'var(--karpis)', desc:'Od 1. mesiaca páka 1:1 na mesačný prebytok (bonus)', bonus:true},
   ];
   document.getElementById('castRow').innerHTML = cast.map(c=>`
     <div class="who${c.bonus?' bonus':''}" style="--c:${c.c}">
@@ -1086,7 +1083,7 @@ function render(){
     {key:'jozo', name:'Jožo', tag:'Od 1. mesiaca prenájom + DCA do akcií', color:'var(--jozo)', data:r.jozo},
     {key:'fero', name:'Fero', tag:'Od 1. mesiaca prenájom + spotrebný úver do akcií', color:'var(--fero)', data:r.fero},
   ];
-  if(state.showKarpis) cards.push({key:'karpis', name:'Karpišova páka', tag:`Bonus · páka 1:1 po ${buyYrs(r.buyMonths.karpis)} šetrenia`, color:'var(--karpis)', data:r.karpis, bonus:true});
+  if(state.showKarpis) cards.push({key:'karpis', name:'Karpišova páka', tag:'Bonus · páka 1:1 od 1. mesiaca', color:'var(--karpis)', data:r.karpis, bonus:true});
 
   const statWrap = document.getElementById('statCards');
   statWrap.innerHTML = '';
@@ -1148,7 +1145,7 @@ function render(){
   const janoVsLaco = r.jano.net - r.laco.net;
   document.getElementById('crossoverBox').innerHTML = `
     <div class="line">📍 Pri aktuálnych nastaveniach po ${state.horizonYears} rokoch vedie <b>${allVals[0].n}</b> s čistým majetkom ${fmtEUR(allVals[0].v)}. Všetci začali od nuly.</div>
-    <div class="line">⏱ Jano/Laco/Milan kupujú prvý byt po <b>${buyYrs(r.buyMonths.laco)}</b> šetrenia v nájme (akontácia + transakčné náklady pri vtedajšej cene). Jožo a Fero medzitým už investujú do akcií — to je ich časový náskok.</div>
+    <div class="line">⏱ Mesačný prebytok na štarte: <b>${fmtEUR(r.monthlyAlloc0)}</b> (mzda − život − nájom). Jano/Laco/Milan kupujú prvý byt po <b>${buyYrs(r.buyMonths.laco)}</b>. Jožo/Fero investujú od 1. mesiaca. Karpiš páka 1:1 od 1. mesiaca.</div>
     <div class="line">🏠 Jano (byty na prenájom, ${r.jano.nUnits}× dokúpil, hypotéka ${state.janoMortgageRate} %) končí o <b>${fmtEUR(Math.abs(janoVsLaco))}</b> ${janoVsLaco>=0?'pred':'za'} Lacom (hypotéka ${state.mortgageRate} % + akcie).</div>
     <div class="line">⚖️ Karpišova páka 1:1 na akcie prekonáva Lacov byt, ak je očakávaný ročný výnos akcií vyšší než približne <b>${crossSpx.toFixed(1)}%</b> (aktuálne ${state.spxReturn}%; rast nehnuteľností ${state.reGrowth}%).</div>
     <div class="line">⚖️ Nepákovaný Jožo dobehne Laca, ak rast cien nehnuteľností klesne pod približne <b>${crossRe.toFixed(1)}%</b> ročne (aktuálne ${state.reGrowth}%), pri výnose akcií ${state.spxReturn}%.</div>
@@ -1255,7 +1252,7 @@ function buildPersonCards(){
 
   <div class="person-card" style="--c:var(--karpis)">
     <h3><span class="dot"></span>6. cesta (bonus) — Karpišova páka 1:1</h3>
-    <div class="tagline">Od nuly šetrí equity (= akontácia), potom 1:1 pákovaná do akcií namiesto bytu</div>
+    <div class="tagline">Od 1. mesiaca: každý prebytok (~1000 €) + rovnaká požičaná suma do akcií</div>
     <div class="blocklabel benefit">Benefity</div>
     <ul class="bullets">
       <li>Priamo testuje Karpišovo tvrdenie z podcastu — rovnaká páka ako pri hypotéke, len na akciách.</li>
